@@ -1,0 +1,4 @@
+complex_cases test #1:	[echo 'Hello World' | grep Hello | .wc -w >> output.txt]
+Leaks Summary:	[still reachable:	8646 bytes]
+
+

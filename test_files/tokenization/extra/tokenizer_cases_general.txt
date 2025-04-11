@@ -1,0 +1,55 @@
+echo a
+echo $a
+echo ''
+echo ""
+echo 'a'
+echo "a"
+echo $USER
+echo '$USER'
+echo "$USER"
+echo "'$USER'"
+echo '"$USER"'
+echo "''$USER''"
+echo ''"$USER"''
+echo ""'$USER'""
+echo '""$USER""'
+echo "'"$USER"'"
+echo "'"'$USER'"'"
+echo "'""$USER""'"
+echo "''"'$USER'"''"
+echo "''""$USER""''"
+echo "''"$USER"''"
+echo "'"$USER
+echo "'""'""'""'"$USER
+echo $USER"'"
+echo $USER"'""'""'""'"
+
+echo '' $USER ''
+echo '' $USER''
+echo ' '$USER ''
+echo 'a'$USER ''
+echo ' ' $USER
+echo 'a' $USER
+echo ' ' $USER''
+echo 'a' $USER''
+echo ' ' $USER ''
+echo 'a' $USER ''
+
+echo '' $USER 'a'
+echo '' $USER'a'
+echo ' ' $USERa
+echo ' ' $USER a
+echo ' '$USER 'a'
+echo ' ' $USER'a'
+echo ' ' $USER 'a'
+echo 'a' $USER'a'
+echo 'a' $USER 'a'
+echo 'a' $USER ''
+echo 'a' $USER''
+echo 'a' $USER' '
+echo 'a' $USER ' '
+echo $USER 'a'
+
+$USER
+'$USER'
+"$USER"
