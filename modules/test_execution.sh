@@ -230,55 +230,79 @@ execute_test_cases() {
   # Open the input CSV using file descriptor 3
   exec 3< "$input_csv"
 
-  while true; do
-    local test_block=""
-    local skip_case=false
-
-    # Read lines until we find one that ends with the delimiter
+  if [[ "${CUMULATIVE_TESTING:-0}" == "1" ]]; then
+    # CUMULATIVE TESTING MODE: run the entire file as one big test block.
+    local full_block=""
     while IFS= read -r line <&3; do
-      # If we hit EOF with no line, break out
-      if [[ -z "$line" && -z "$test_block" ]]; then
-        break 2  # break outer while
+      # Skip certain cases if bonus is off
+      if [[ "$line" == *"sleep"* ]] || 
+         [[ "${BONUS_TESTING_ENABLED:-0}" -eq 0 && 
+         ("$line" == *"*"* || "$line" == *"&&"* || "$line" == *"||"* || "$line" == *"("* || "$line" == *")"*) ]]; then
+        continue
       fi
 
-	    if  [[ "$line" == *"sleep"* ]] || 
-          [[ "${BONUS_TESTING_ENABLED:-0}" -eq 0 && 
-          ("$line" == *"*"* || "$line" == *"&&"* || "$line" == *"||"* || "$line" == *"("* || "$line" == *")"*) ]]; then
-        skip_case=true
-		    break
-      fi
-
-      if [[ "$line" == *"$delimiter" ]]; then
-        # Remove the trailing delimiter
-        line="${line%$delimiter}"
-
-        # Append this final line to test_block
-        test_block+="$line"$'\n'
-        break
-      else
-        test_block+="$line"$'\n'
-      fi
+      # Remove trailing delimiter if present
+      line="${line%$delimiter}"
+      full_block+="${line}"$'\n'
     done
 
-	  if $skip_case; then
-      continue
-    fi
-
-    # If we didn't accumulate anything, we might be at EOF
-    if [[ -z "$test_block" ]]; then
-      break
-    fi
+    # Strip leading $> if present on each line
+    full_block="$(echo "$full_block" | sed 's/^\$> //')"
 
     TOTAL_TESTS=$((TOTAL_TESTS+1))
+    
+    run_one_case "$full_block" "$test_index" "$valgrind_enabled" "$file"
+  else
+    while true; do
+      local test_block=""
+      local skip_case=false
 
-    # For each line, remove leading "$> " if present
-    # We'll do that for the entire block
-    local cleaned_block="$(echo "$test_block" | sed 's/^\$> //')"
+      # Read lines until we find one that ends with the delimiter
+      while IFS= read -r line <&3; do
+        # If we hit EOF with no line, break out
+        if [[ -z "$line" && -z "$test_block" ]]; then
+          break 2  # break outer while
+        fi
 
-    # run the entire block as one case
-    run_one_case "$cleaned_block" "$test_index" "$valgrind_enabled" "$file"
-    ((test_index++))
-  done
+        if  [[ "$line" == *"sleep"* ]] || 
+            [[ "${BONUS_TESTING_ENABLED:-0}" -eq 0 && 
+            ("$line" == *"*"* || "$line" == *"&&"* || "$line" == *"||"* || "$line" == *"("* || "$line" == *")"*) ]]; then
+          skip_case=true
+          break
+        fi
+
+        if [[ "$line" == *"$delimiter" ]]; then
+          # Remove the trailing delimiter
+          line="${line%$delimiter}"
+
+          # Append this final line to test_block
+          test_block+="$line"$'\n'
+          break
+        else
+          test_block+="$line"$'\n'
+        fi
+      done
+
+      if $skip_case; then
+        continue
+      fi
+
+      # If we didn't accumulate anything, we might be at EOF
+      if [[ -z "$test_block" ]]; then
+        break
+      fi
+
+      TOTAL_TESTS=$((TOTAL_TESTS+1))
+
+      # For each line, remove leading "$> " if present
+      # We'll do that for the entire block
+      local cleaned_block="$(echo "$test_block" | sed 's/^\$> //')"
+
+      # run the entire block as one case
+      run_one_case "$cleaned_block" "$test_index" "$valgrind_enabled" "$file"
+      ((test_index++))
+    done
+  fi
 
   exec 3<&-
 }
