@@ -20,7 +20,30 @@ display_failed_summary() {
     # DEBUGGING=0 => print EVERY line in RED, ignore chunking
     ############################################################
     while IFS= read -r line <&3; do
-      echo -e "${RED}$line"
+      # If line matches:  ^[^[:space:]]+[[:space:]]+test[[:space:]]+#[0-9]+, red
+      if [[ "$line" =~ ^[^[:space:]]+[[:space:]]+test[[:space:]]+#[0-9]+: ]]; then
+        state="header"
+        echo -ne "${RED}$line"
+        continue
+      fi
+
+      # If line starts with Leaks Summary:, yellow
+      if [[ "$line" =~ ^[[:space:]]*Leaks[[:space:]]Summary: ]]; then
+        state="leaks"
+        echo -e "\\n${YELLOW}$line"
+        continue
+      fi
+
+      case "$state" in
+        header)
+          echo -ne "${RED}$line"
+          ;;
+        leaks)
+          echo -ne "${YELLOW}$line"
+          ;;
+      esac
+
+      echo
     done
   else
     ############################################################
@@ -49,12 +72,12 @@ display_failed_summary() {
         continue
       fi
 
-	  # If line starts with Leaks, yellow
-	  if [[ "$line" =~ ^Leaks ]]; then
-		state="leaks"
-		echo -e "${YELLOW}$line"
-		continue
-	  fi
+      # If line starts with Leaks Summary:, yellow
+      if [[ "$line" =~ ^[[:space:]]*Leaks[[:space:]]Summary: ]]; then
+        state="leaks"
+        echo -e "${YELLOW}$line"
+        continue
+      fi
 
       # Otherwise, color depends on current state
       case "$state" in
@@ -67,9 +90,9 @@ display_failed_summary() {
         actual)
           echo -e "${RED}$line"
           ;;
-		leaks)
-		  echo -e "${YELLOW}$line"
-		  ;;
+        leaks)
+          echo -e "${YELLOW}$line"
+          ;;
       esac
     done
   fi

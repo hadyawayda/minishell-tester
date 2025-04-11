@@ -1,0 +1,5 @@
+# Configuration files
+*.ini
+
+# Tester files
+tester_files/

@@ -6,25 +6,25 @@
 # ===============================
 # 1. ROOT_DIR: minishell/
 ROOT_DIR="$(dirname "$(dirname "$(realpath "${BASH_SOURCE[0]}")")")"
-# 2. TESTER_DIR: minishell/unit_tester/
-TESTER_DIR="$ROOT_DIR/unit_tester"
-# 3. MODULES_DIR: minishell/unit_tester/modules/
+# 2. TESTER_DIR: minishell/minishell-tester/
+TESTER_DIR="$ROOT_DIR/minishell-tester"
+# 3. MODULES_DIR: minishell/minishell-tester/modules/
 MODULES_DIR="$TESTER_DIR/modules"
-# 4. TEST_FILES_DIR: minishell/unit_tester/test_files/
+# 4. TEST_FILES_DIR: minishell/minishell-tester/test_files/
 TEST_FILES_DIR="$TESTER_DIR/test_files"
-# 5. TESTER_FILES_DIR: minishell/unit_tester/tester_files/
+# 5. TESTER_FILES_DIR: minishell/minishell-tester/tester_files/
 TESTER_FILES_DIR="$TESTER_DIR/tester_files"
-# 6. CONVERTED_FILES_DIR: minishell/unit_tester/tester_files/converted_files/
+# 6. CONVERTED_FILES_DIR: minishell/minishell-tester/tester_files/converted_files/
 CONVERTED_FILES_DIR="$TESTER_FILES_DIR/converted_files"
-# 7. EXECUTION_DIR: minishell/unit_tester/tester_files/execution/
+# 7. EXECUTION_DIR: minishell/minishell-tester/tester_files/execution/
 EXECUTION_DIR="$TESTER_FILES_DIR/execution"
-# 8. PROGRAM_TEST_DIR: minishell/unit_tester/test_files/program/
+# 8. PROGRAM_TEST_DIR: minishell/minishell-tester/test_files/program/
 PROGRAM_TEST_DIR="$TEST_FILES_DIR/program"
-# 9. TOKENIZATION_TEST_DIR: minishell/unit_tester/test_files/tokenization/
+# 9. TOKENIZATION_TEST_DIR: minishell/minishell-tester/test_files/tokenization/
 TOKENIZATION_TEST_DIR="$TEST_FILES_DIR/tokenization"
-# 10. FAILED_TESTS_SUMMARY_DIR: minishell/unit_tester/tester_files/failed_tests_summary/
+# 10. FAILED_TESTS_SUMMARY_DIR: minishell/minishell-tester/tester_files/failed_tests_summary/
 FAILED_TESTS_SUMMARY_DIR="$TESTER_FILES_DIR/failed_tests_summary"
-# 11. FAILED_SUMMARY_FILE: minishell/unit_tester/tester_files/failed_summary.txt
+# 11. FAILED_SUMMARY_FILE: minishell/minishell-tester/tester_files/failed_summary.txt
 FAILED_SUMMARY_FILE="$FAILED_TESTS_SUMMARY_DIR/failed_summary.txt"
 
 # Global counters
@@ -52,13 +52,11 @@ if [[ ! -f "$CONFIG_FILE" ]]; then
             PROGRAM_PROMPT="$value"
         fi
     done < "$CONFIG_FILE"
-    echo "COMPARISON_METHOD=\"csv\"" > "$CONFIG_FILE"
-    echo "VALGRIND_ENABLED=\"0\"" >> "$CONFIG_FILE"
-    echo "EXCEL_FILE=\"tests.xlsx\"" >> "$CONFIG_FILE"
-    echo "CSV_FILE=\"tests.csv\"" >> "$CONFIG_FILE"
-    echo "BONUS_TESTING_ENABLED=\"0\"" >> "$CONFIG_FILE"
 	echo "PROGRAM_PROMPT=\"\"" >> "$CONFIG_FILE"
+    echo "VALGRIND_ENABLED=\"0\"" >> "$CONFIG_FILE"
     echo "DEBUGGING=\"0\"" >> "$CONFIG_FILE"
+    echo "CUMULATIVE_TESTING=\"0\"" >> "$CONFIG_FILE"
+    echo "BONUS_TESTING_ENABLED=\"0\"" >> "$CONFIG_FILE"
 fi
 
 source "$CONFIG_FILE"

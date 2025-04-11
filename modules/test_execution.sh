@@ -188,7 +188,10 @@ run_one_case() {
   fi
 
   if [[ "$valgrind_enabled" == "1" && "$leak_flag" -ne 0 ]]; then
-    echo -e "${YELLOW}Leaks Summary:\t${leak_summary}"
+    echo -ne "${YELLOW}Leaks Summary:\t${leak_summary}"
+    if [[ "$DEBUGGING" == "1" ]]; then
+      echo
+    fi
   fi
 
   if [[ "$DEBUGGING" == "1" ]]; then
@@ -206,11 +209,11 @@ run_one_case() {
       fi
       echo -e "[${cmd_block}]"
       if [[ "$DEBUGGING" == "1" ]]; then
-        echo -e "Expected:\\t[${expected_output}]"
-        echo -e "Actual:\\t\\t[${actual_output}]"
+        echo -e "Expected:\\t\\t[${expected_output}]"
+        echo -e "Actual:\\t\\t\\t[${actual_output}]"
       fi
       if [[ "$valgrind_enabled" == "1" && "$leak_flag" -ne 0 ]]; then
-        echo -e "Leaks Summary:\t${leak_summary}"
+        echo -ne "Leaks Summary:\t\t${leak_summary}"
       fi
       echo
     } >> "$FAILED_SUMMARY_FILE"
