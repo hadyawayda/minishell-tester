@@ -51,170 +51,165 @@ parse_leaks() {
 }
 
 run_one_case() {
-  local cmd_block="$1"
-  local test_index="$2"
-  local valgrind_enabled="$3"
-  local file="$4"
+  local cmd_block="$1" test_index="$2" valgrind_enabled="$3" file="$4"
 
   # 1) Compute expected output using bash
   local expected_output="$(echo -e "$cmd_block" | bash 2>&1)"
 
   # 2) Run your minishell on the same block
   local actual_output="$(echo -e "$cmd_block" | "$ROOT_DIR/minishell" 2>&1)"
-
-  # 3) Strip ANSI color codes and prompt lines
-  actual_output="$(
-    echo "$actual_output" | sed -E "
-      s/\x1b\[[0-9;]*m//g;   # remove ANSI color codes
-      1d;                   # remove the first line
-      s|${PROGRAM_PROMPT//|\\|}.*||
-    "
-  )"
+  actual_output="$(clean_actual_output "$actual_output")"
 
   # 4) If valgrind is enabled, capture the full leaks summary.
   local leaks_output="No leaks detected"
+  local leak_summary=""
+  local leak_flag=0
   if [[ "$valgrind_enabled" == "1" ]]; then
-    leaks_output="$(echo -e "$cmd_block" | \
-      valgrind --leak-check=full --suppressions=$TESTER_DIR/config/ignore_readline.supp \
-      "$ROOT_DIR/minishell" 2>&1)"
-    local leak_summary=$(parse_leaks "$leaks_output")
-    local leak_flag=0
-    if [[ -n "$leak_summary" ]]; then
-      leak_flag=1
-    fi
+    leaks_output="$(run_valgrind_check "$cmd_block")"
+    leak_summary=$(parse_leaks "$leaks_output")
+    [[ -n "$leak_summary" ]] && leak_flag=1
   fi
 
   # 5) Compare outputs (partial match for errors, or exact match)
   local pass_output=false
-
-  if [[ "$expected_output" == *"syntax error"* && "$actual_output" == *"syntax error"* ]]; then
-    pass_output=true
-  elif [[ "$expected_output" == *"command not found"* && "$actual_output" == *"command not found"* ]]; then
-    pass_output=true
-  elif [[ "$expected_output" == *"No such file or directory"* && "$actual_output" == *"No such file or directory"* ]]; then
-    pass_output=true
-  elif [[ "$expected_output" == *"Is a directory"* && "$actual_output" == *"Is a directory"* ]]; then
-    pass_output=true
-  elif [[ "$expected_output" == *"invalid option"* && "$actual_output" == *"invalid option"* ]]; then
-    pass_output=true
-  elif [[ "$expected_output" == *"not a valid identifier"* && "$actual_output" == *"not a valid identifier"* ]]; then
-    pass_output=true
-  elif [[ "$expected_output" == *"numeric argument required"* && "$actual_output" == *"numeric argument required"* ]]; then
-    pass_output=true
-  elif [[ "$expected_output" == *"too many arguments"* && "$actual_output" == *"too many arguments"* ]]; then
-    pass_output=true
-  elif [[ "$expected_output" == *"ambiguous redirect"* && "$actual_output" == *"ambiguous redirect"* ]]; then
-    pass_output=true
-  elif [[ "$expected_output" == *"here-document at line 1 delimited by end-of-file"* && "$actual_output" == *"here-document at line 1 delimited by end-of-file"* ]]; then
-    pass_output=true
-  elif [[ "$actual_output" == "$expected_output" ]]; then
-    pass_output=true
-  fi
+  compare_outputs "$expected_output" "$actual_output" && pass_output=true
 
   local pass_leak=false
-  if [[ "$valgrind_enabled" == "0" ]] || [[ "$leak_flag" -eq 0 ]]; then
-    pass_leak=true
-  fi
+  [[ "$valgrind_enabled" == "0" || "$leak_flag" -eq 0 ]] && pass_leak=true
 
   local overall_pass=false
-  if $pass_output && $pass_leak; then
-    overall_pass=true
-  fi
+  $pass_output && $pass_leak && overall_pass=true
 
   # 6) Colorize output results
-  local header_color expected_color actual_color
-  if [[ "$DEBUGGING" == "1" ]]; then
-    if $overall_pass; then
-      # Output correct, debugging on.
-      if [[ "$leak_flag" -eq 1 ]]; then
-        header_color="${YELLOW}"    # leaks present -> header becomes YELLOW
-        expected_color="${GREEN}"   # expected remains GREEN
-        actual_color="${GREEN}"    # actual becomes YELLOW
-      else
-        header_color="${BLUE}"      # no leaks -> header is BLUE
-        expected_color="${GREEN}"   # expected remains GREEN
-        actual_color="${GREEN}"     # actual becomes GREEN
-      fi
-    else
-      # Output not correct, debugging on.
-      if [[ "$leak_flag" -eq 1 ]]; then
-        header_color="${ORANGE}"    # leaks present -> header becomes ORANGE
-        expected_color="${GREEN}"   # expected remains GREEN
-        actual_color="${RED}"    # actual becomes YELLOW
-      else
-        header_color="${BLUE}"      # no leaks -> header remains BLUE
-        expected_color="${GREEN}"   # expected remains GREEN
-        actual_color="${RED}"       # actual becomes RED
-      fi
-    fi
-  else
-    # DEBUGGING off, only header is printed.
-    if $overall_pass; then
-      if [[ "$leak_flag" -eq 1 ]]; then
-        header_color="${ORANGE}"    # correct output, but leaks: header = YELLOW
-      else
-        header_color="${GREEN}"     # correct output, no leaks: header = GREEN
-      fi
-    else
-	header_color="${RED}"       # incorrect output, no leaks: header = RED
-    fi
-  fi
+  local header_color expected_color="${GREEN}" actual_color
+  determine_colors "$overall_pass" "$leak_flag" "$DEBUGGING" header_color actual_color
 
   # 7) Print results
-  if $overall_pass; then
-    echo -ne "${header_color}"
-    echo -ne "Test #$test_index"
-    if (( test_index > 9 )); then
-      echo -ne "\t"
-    else
-      echo -ne "\t\t"
-    fi
-    echo -e "[${cmd_block}]"
-    PASSED_TESTS=$((PASSED_TESTS+1))
-  else
-    echo -ne "${header_color}"
-    echo -ne "Test #$test_index"
-    if (( test_index > 9 )); then
-      echo -ne "\t"
-    else
-      echo -ne "\t\t"
-    fi
-    echo -e "[${cmd_block}]"
-  fi
-
-  if [[ "$DEBUGGING" == "1" ]]; then
-    echo -e "${expected_color}Expected:\t[${expected_output}]"
-    echo -e "${actual_color}Actual:\t\t[${actual_output}]"
-  fi
-
-  if [[ "$valgrind_enabled" == "1" && "$leak_flag" -ne 0 ]]; then
-    echo -ne "${YELLOW}Leaks Summary:\t${leak_summary}"
-    if [[ "$DEBUGGING" == "1" ]]; then
-      echo
-    fi
-  fi
-
-  if [[ "$DEBUGGING" == "1" ]]; then
-    echo
-  fi
+  print_test_result "$test_index" "$cmd_block" "$expected_output" "$actual_output" "$leak_flag" "$leak_summary" "$header_color" "$expected_color" "$actual_color"
+  $overall_pass && PASSED_TESTS=$((PASSED_TESTS + 1))
 
   # 8) Log failure details if the test failed.
-  if ! $overall_pass; then
-    {
-	    echo -ne "$file test #$test_index:"
-      if (( test_index > 9 )); then
-        echo -ne "\\t"
+  log_failure_if_needed "$overall_pass" "$file" "$test_index" "$cmd_block" "$expected_output" "$actual_output" "$leak_flag" "$leak_summary"
+}
+
+clean_actual_output() {
+  local raw_output="$1"
+  echo "$raw_output" | sed -E "
+    s/\x1b\[[0-9;]*m//g;
+    1d;
+    s|${PROGRAM_PROMPT//|\\|}.*||
+  "
+}
+
+run_valgrind_check() {
+  local cmd_block="$1"
+  echo -e "$cmd_block" | \
+    valgrind --leak-check=full --suppressions=$CONFIG_DIR/ignore_readline.supp \
+    "$ROOT_DIR/minishell" 2>&1
+}
+
+compare_outputs() {
+  local expected="$1"
+  local actual="$2"
+
+  [[ "$expected" == *"syntax error"* && "$actual" == *"syntax error"* ]] ||
+  [[ "$expected" == *"command not found"* && "$actual" == *"command not found"* ]] ||
+  [[ "$expected" == *"No such file or directory"* && "$actual" == *"No such file or directory"* ]] ||
+  [[ "$expected" == *"Is a directory"* && "$actual" == *"Is a directory"* ]] ||
+  [[ "$expected" == *"invalid option"* && "$actual" == *"invalid option"* ]] ||
+  [[ "$expected" == *"not a valid identifier"* && "$actual" == *"not a valid identifier"* ]] ||
+  [[ "$expected" == *"numeric argument required"* && "$actual" == *"numeric argument required"* ]] ||
+  [[ "$expected" == *"too many arguments"* && "$actual" == *"too many arguments"* ]] ||
+  [[ "$expected" == *"ambiguous redirect"* && "$actual" == *"ambiguous redirect"* ]] ||
+  [[ "$expected" == *"here-document at line 1 delimited by end-of-file"* &&
+     "$actual" == *"here-document at line 1 delimited by end-of-file"* ]] ||
+  [[ "$actual" == "$expected" ]]
+}
+
+determine_colors() {
+  local overall_pass="$1"
+  local leak_flag="$2"
+  local debugging="$3"
+  local -n _header_color=$4
+  local -n _actual_color=$5
+
+  if [[ "$debugging" == "1" ]]; then
+    if $overall_pass; then
+      _actual_color="${GREEN}"
+      if [[ "$leak_flag" -eq 1 ]]; then
+        _header_color="${YELLOW}"  # Correct output, but leaks
       else
-        echo -ne "\\t"
+        _header_color="${BLUE}"    # Correct output, no leaks
       fi
-      echo -e "[${cmd_block}]"
-      if [[ "$DEBUGGING" == "1" ]]; then
-        echo -e "Expected:\\t\\t[${expected_output}]"
-        echo -e "Actual:\\t\\t\\t[${actual_output}]"
+    else
+      _actual_color="${RED}"
+      if [[ "$leak_flag" -eq 1 ]]; then
+        _header_color="${ORANGE}"  # Wrong output and leaks
+      else
+        _header_color="${BLUE}"    # Wrong output, no leaks
       fi
-      if [[ "$valgrind_enabled" == "1" && "$leak_flag" -ne 0 ]]; then
-        echo -ne "Leaks Summary:\t\t${leak_summary}"
+    fi
+  else
+    # DEBUGGING off, only header is colored
+    if $overall_pass; then
+      if [[ "$leak_flag" -eq 1 ]]; then
+        _header_color="${ORANGE}"  # Correct output but with leaks
+      else
+        _header_color="${GREEN}"   # Perfect pass
       fi
+    else
+      _header_color="${RED}"       # Incorrect output
+    fi
+  fi
+}
+
+print_test_result() {
+  local test_index="$1"
+  local cmd_block="$2"
+  local expected="$3"
+  local actual="$4"
+  local leaks="$5"
+  local leak_summary="$6"
+  local header_color="$7"
+  local expected_color="$8"
+  local actual_color="$9"
+
+  echo -ne "${header_color}Test #$test_index"
+  (( test_index > 9 )) && echo -ne "\t" || echo -ne "\t\t"
+  echo -e "[$cmd_block]"
+
+  if [[ "$DEBUGGING" == "1" ]]; then
+    echo -e "${expected_color}Expected:\t[${expected}]"
+    echo -e "${actual_color}Actual:\t\t[${actual}]"
+  fi
+
+  if [[ "$valgrind_enabled" == "1" && "$leaks" -ne 0 ]]; then
+    echo -ne "${YELLOW}Leaks Summary:\t$leak_summary"
+    [[ "$DEBUGGING" == "1" ]] && echo
+  fi
+
+  [[ "$DEBUGGING" == "1" ]] && echo
+}
+
+log_failure_if_needed() {
+  local pass="$1"
+  local file="$2"
+  local test_index="$3"
+  local cmd_block="$4"
+  local expected="$5"
+  local actual="$6"
+  local leak_flag="$7"
+  local leak_summary="$8"
+
+  if ! $pass; then
+    {
+      echo -ne "$file test #$test_index:\t[$cmd_block]"
+      echo
+      [[ "$DEBUGGING" == "1" ]] && {
+        echo -e "Expected:\t\t[$expected]"
+        echo -e "Actual:\t\t\t[$actual]"
+      }
+      [[ "$valgrind_enabled" == "1" && "$leak_flag" -ne 0 ]] && echo -e "Leaks Summary:\t\t$leak_summary"
       echo
     } >> "$FAILED_SUMMARY_FILE"
   fi

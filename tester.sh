@@ -8,23 +8,25 @@
 ROOT_DIR="$(dirname "$(dirname "$(realpath "${BASH_SOURCE[0]}")")")"
 # 2. TESTER_DIR: minishell/minishell-tester/
 TESTER_DIR="$ROOT_DIR/minishell-tester"
-# 3. MODULES_DIR: minishell/minishell-tester/modules/
+# 3. CONFIG_DIR: minishell/minishell-tester/config
+CONFIG_DIR="$TESTER_DIR/config"
+# 4. MODULES_DIR: minishell/minishell-tester/modules/
 MODULES_DIR="$TESTER_DIR/modules"
-# 4. TEST_FILES_DIR: minishell/minishell-tester/test_files/
+# 5. TEST_FILES_DIR: minishell/minishell-tester/test_files/
 TEST_FILES_DIR="$TESTER_DIR/test_files"
-# 5. TESTER_FILES_DIR: minishell/minishell-tester/tester_files/
+# 6. TESTER_FILES_DIR: minishell/minishell-tester/tester_files/
 TESTER_FILES_DIR="$TESTER_DIR/tester_files"
-# 6. CONVERTED_FILES_DIR: minishell/minishell-tester/tester_files/converted_files/
+# 7. CONVERTED_FILES_DIR: minishell/minishell-tester/tester_files/converted_files/
 CONVERTED_FILES_DIR="$TESTER_FILES_DIR/converted_files"
-# 7. EXECUTION_DIR: minishell/minishell-tester/tester_files/execution/
+# 8. EXECUTION_DIR: minishell/minishell-tester/tester_files/execution/
 EXECUTION_DIR="$TESTER_FILES_DIR/execution"
-# 8. PROGRAM_TEST_DIR: minishell/minishell-tester/test_files/program/
+# 9. PROGRAM_TEST_DIR: minishell/minishell-tester/test_files/program/
 PROGRAM_TEST_DIR="$TEST_FILES_DIR/program"
-# 9. TOKENIZATION_TEST_DIR: minishell/minishell-tester/test_files/tokenization/
+# 10. TOKENIZATION_TEST_DIR: minishell/minishell-tester/test_files/tokenization/
 TOKENIZATION_TEST_DIR="$TEST_FILES_DIR/tokenization"
-# 10. FAILED_TESTS_SUMMARY_DIR: minishell/minishell-tester/tester_files/failed_tests_summary/
+# 11. FAILED_TESTS_SUMMARY_DIR: minishell/minishell-tester/tester_files/failed_tests_summary/
 FAILED_TESTS_SUMMARY_DIR="$TESTER_FILES_DIR/failed_tests_summary"
-# 11. FAILED_SUMMARY_FILE: minishell/minishell-tester/tester_files/failed_summary.txt
+# 12. FAILED_SUMMARY_FILE: minishell/minishell-tester/tester_files/failed_summary.txt
 FAILED_SUMMARY_FILE="$FAILED_TESTS_SUMMARY_DIR/failed_summary.txt"
 
 # Global counters
@@ -60,6 +62,8 @@ if [[ ! -f "$CONFIG_FILE" ]]; then
 fi
 
 source "$CONFIG_FILE"
+
+chmod +x $ROOT_DIR/minishell
 
 # Color Codes
 RED='\033[0;31m'
