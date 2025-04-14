@@ -57,8 +57,10 @@ run_one_case() {
   local expected_output="$(echo -e "$cmd_block" | bash 2>&1)"
 
   # 2) Run your minishell on the same block
-  local actual_output="$(echo -e "$cmd_block" | "$ROOT_DIR/minishell" 2>&1)"
+  local actual_output="$(echo -e "$cmd_block" | script -q -c "$ROOT_DIR/minishell" /dev/null 2>&1)"
   actual_output="$(clean_actual_output "$actual_output")"
+  # echo -e "$actual_output" | cat -A
+  echo -e $actual_output "\n" >> output.txt
 
   # 4) If valgrind is enabled, capture the full leaks summary.
   local leaks_output="No leaks detected"
@@ -94,11 +96,37 @@ run_one_case() {
 
 clean_actual_output() {
   local raw_output="$1"
-  echo "$raw_output" | sed -E "
-    s/\x1b\[[0-9;]*m//g;
-    1d;
-    s|${PROGRAM_PROMPT//|\\|}.*||
-  "
+  local cleaned=""
+  local IFS=$'\n'
+  local line
+  local line_number=0
+
+  # Process the raw output line by line.
+  for line in $raw_output; do
+    ((line_number++))
+    # Skip the command lines (assumed to be the first two)
+    if (( line_number <= 2 )); then
+      continue
+    fi
+
+    # When a line contains PROGRAM_PROMPT anywhere, remove it and everything following,
+    # and stop processing further lines.
+    if [[ "$line" == *"$PROGRAM_PROMPT"* ]]; then
+      cleaned+="${line%%$PROGRAM_PROMPT*}"
+      break
+    fi
+
+    # Otherwise, append the whole line.
+    cleaned+="$line"$'\n'
+  done
+
+  # Output the cleaned result.
+  # (This prints all output lines up to the first occurrence of PROGRAM_PROMPT.)
+  printf "%s" "$cleaned" | strip_ansi_and_cr
+}
+
+strip_ansi_and_cr() {
+  sed -E 's/\x1b\[[0-9;?]*[a-zA-Z]//g' | tr -d '\r'
 }
 
 run_valgrind_check() {
@@ -203,7 +231,7 @@ log_failure_if_needed() {
 
   if ! $pass; then
     {
-      echo -ne "$file test #$test_index:\t[$cmd_block]"
+      echo -ne "$file test #$test_index:\t\t[$cmd_block]"
       echo
       [[ "$DEBUGGING" == "1" ]] && {
         echo -e "Expected:\t\t[$expected]"
