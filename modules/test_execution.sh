@@ -57,9 +57,16 @@ run_one_case() {
   local expected_output="$(echo -e "$cmd_block" | bash 2>&1)"
 
   # 2) Run your minishell on the same block
-  local actual_output="$(echo -e "$cmd_block" | script -q -c "$ROOT_DIR/minishell" /dev/null 2>&1 | strip_ansi_and_cr )"
+  if [[ "$cmd_block" == *"| cat -e"* ]]; then
+    actual_output="$(echo -e "$cmd_block" | script -q -c "$ROOT_DIR/minishell" /dev/null 2>&1 | strip_ansi_and_cr)"
+    actual_output="$(clean_interactive_output "$actual_output")"
+  else
+    actual_output="$(echo -e "$cmd_block" | "$ROOT_DIR/minishell" 2>&1 | strip_ansi_and_cr)"
+    actual_output="$(clean_actual_output "$actual_output")"
+  fi
+  # actual_output="$(echo -e "$cmd_block" | "$ROOT_DIR/minishell" 2>&1 | strip_ansi_and_cr)"
+  #   actual_output="$(clean_actual_output "$actual_output")"
   # echo -e $actual_output "\n" | strip_ansi_and_cr >> output.txt
-  actual_output="$(clean_actual_output "$actual_output")"
   # echo -e "$expected_output" | cat -A
   # echo -e "$actual_output"   | cat -A
   # echo
@@ -96,7 +103,7 @@ run_one_case() {
   log_failure_if_needed "$overall_pass" "$file" "$test_index" "$cmd_block" "$expected_output" "$actual_output" "$leak_flag" "$leak_summary"
 }
 
-clean_actual_output() {
+clean_interactive_output() {
   local raw_output="$1"
   local cleaned=""
   local IFS=$'\n'
@@ -129,6 +136,15 @@ clean_actual_output() {
 
 strip_ansi_and_cr() {
   sed -E 's/\x1b\[[0-9;?]*[a-zA-Z]//g' | tr -d '\r'
+}
+
+clean_actual_output() {
+  local raw_output="$1"
+  echo "$raw_output" | sed -E "
+    s/\x1b\[[0-9;]*m//g;
+    1d;
+    s|${PROGRAM_PROMPT//|\\|}.*||
+  "
 }
 
 run_valgrind_check() {
