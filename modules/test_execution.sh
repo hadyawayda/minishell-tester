@@ -146,6 +146,8 @@ compare_outputs() {
   [[ "$expected" == *"command not found"* && "$actual" == *"command not found"* ]] ||
   [[ "$expected" == *"No such file or directory"* && "$actual" == *"No such file or directory"* ]] ||
   [[ "$expected" == *"Is a directory"* && "$actual" == *"Is a directory"* ]] ||
+  [[ "$expected" == *"Permission denied"* && "$actual" == *"Permission denied"* ]] ||
+  [[ "$expected" == *"not set"* && "$actual" == *"not set"* ]] ||
   [[ "$expected" == *"invalid option"* && "$actual" == *"invalid option"* ]] ||
   [[ "$expected" == *"not a valid identifier"* && "$actual" == *"not a valid identifier"* ]] ||
   [[ "$expected" == *"numeric argument required"* && "$actual" == *"numeric argument required"* ]] ||
