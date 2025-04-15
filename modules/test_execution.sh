@@ -57,10 +57,12 @@ run_one_case() {
   local expected_output="$(echo -e "$cmd_block" | bash 2>&1)"
 
   # 2) Run your minishell on the same block
-  local actual_output="$(echo -e "$cmd_block" | script -q -c "$ROOT_DIR/minishell" /dev/null 2>&1)"
+  local actual_output="$(echo -e "$cmd_block" | script -q -c "$ROOT_DIR/minishell" /dev/null 2>&1 | strip_ansi_and_cr )"
+  # echo -e $actual_output "\n" | strip_ansi_and_cr >> output.txt
   actual_output="$(clean_actual_output "$actual_output")"
-  # echo -e "$actual_output" | cat -A
-  echo -e $actual_output "\n" >> output.txt
+  # echo -e "$expected_output" | cat -A
+  # echo -e "$actual_output"   | cat -A
+  # echo
 
   # 4) If valgrind is enabled, capture the full leaks summary.
   local leaks_output="No leaks detected"
@@ -122,7 +124,7 @@ clean_actual_output() {
 
   # Output the cleaned result.
   # (This prints all output lines up to the first occurrence of PROGRAM_PROMPT.)
-  printf "%s" "$cleaned" | strip_ansi_and_cr
+  printf "%s" "$cleaned"
 }
 
 strip_ansi_and_cr() {
