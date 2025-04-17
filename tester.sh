@@ -20,13 +20,15 @@ TESTER_FILES_DIR="$TESTER_DIR/tester_files"
 CONVERTED_FILES_DIR="$TESTER_FILES_DIR/converted_files"
 # 8. EXECUTION_DIR: minishell/minishell-tester/tester_files/execution/
 EXECUTION_DIR="$TESTER_FILES_DIR/execution"
-# 9. PROGRAM_TEST_DIR: minishell/minishell-tester/test_files/program/
+# 9. BASH_EXECUTION_DIR: minishell/minishell-tester/tester_files/bash_execution/
+BASH_EXECUTION_DIR="$TESTER_FILES_DIR/bash_execution"
+# 10. PROGRAM_TEST_DIR: minishell/minishell-tester/test_files/program/
 PROGRAM_TEST_DIR="$TEST_FILES_DIR/program"
-# 10. TOKENIZATION_TEST_DIR: minishell/minishell-tester/test_files/tokenization/
+# 11. TOKENIZATION_TEST_DIR: minishell/minishell-tester/test_files/tokenization/
 TOKENIZATION_TEST_DIR="$TEST_FILES_DIR/tokenization"
-# 11. FAILED_TESTS_SUMMARY_DIR: minishell/minishell-tester/tester_files/failed_tests_summary/
+# 12. FAILED_TESTS_SUMMARY_DIR: minishell/minishell-tester/tester_files/failed_tests_summary/
 FAILED_TESTS_SUMMARY_DIR="$TESTER_FILES_DIR/failed_tests_summary"
-# 12. FAILED_SUMMARY_FILE: minishell/minishell-tester/tester_files/failed_summary.txt
+# 13. FAILED_SUMMARY_FILE: minishell/minishell-tester/tester_files/failed_summary.txt
 FAILED_SUMMARY_FILE="$FAILED_TESTS_SUMMARY_DIR/failed_summary.txt"
 
 # Global counters
@@ -102,7 +104,7 @@ while true; do
     echo -e "${GREEN}1) Minishell Tester"
     echo -e "2) Tokenization Tester"
     echo -e "3) Parsing & Tree Tester (Upcoming Feature)"
-    echo -e "4) Settings (Upcoming Feature)"
+    echo -e "4) Settings"
     echo -e "${ORANGE}f) Exit${GREEN}"
     echo -e "${GREEN}"
     read -n 1 -rp "Select an option: " choice

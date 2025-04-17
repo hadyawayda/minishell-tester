@@ -80,6 +80,7 @@ execute_test() {
     local original_dir="$(pwd)"
     local test_dir
 
+    rm -rf "$TESTER_FILES_DIR"
 	mkdir -p "$FAILED_TESTS_SUMMARY_DIR"
 
 	# Ensure we start with an empty summary file.
@@ -97,7 +98,12 @@ execute_test() {
 
     # Create and enter the isolated execution directory
     mkdir -p "$EXECUTION_DIR"
+    mkdir -p "$BASH_EXECUTION_DIR"
     mkdir -p "$CONVERTED_FILES_DIR"
+    cp "$ROOT_DIR/minishell" "$EXECUTION_DIR"
+    cp "$ROOT_DIR/minishell" "$BASH_EXECUTION_DIR"
+    chmod +x $EXECUTION_DIR/minishell
+    chmod +x $BASH_EXECUTION_DIR/minishell
     cd "$EXECUTION_DIR" || { echo "Cannot enter execution directory"; return 1; }
 
     if [[ "$test_arg" == "all" ]]; then

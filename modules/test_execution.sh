@@ -55,21 +55,19 @@ run_one_case() {
 
   # 1) Compute expected output using bash
   local expected_output="$(echo -e "$cmd_block" | bash 2>&1)"
+  cd "$EXECUTION_DIR"
 
   # 2) Run your minishell on the same block
-  if [[ "$cmd_block" == *"| cat -e"* ]]; then
+  if [[ "$cmd_block" == *"| cat -e"*  || "$cmd_block" == *"|"* ]]; then
     actual_output="$(echo -e "$cmd_block" | script -q -c "$ROOT_DIR/minishell" /dev/null 2>&1 | strip_ansi_and_cr)"
     actual_output="$(clean_interactive_output "$actual_output")"
   else
     actual_output="$(echo -e "$cmd_block" | "$ROOT_DIR/minishell" 2>&1 | strip_ansi_and_cr)"
     actual_output="$(clean_actual_output "$actual_output")"
   fi
-  # actual_output="$(echo -e "$cmd_block" | "$ROOT_DIR/minishell" 2>&1 | strip_ansi_and_cr)"
-  #   actual_output="$(clean_actual_output "$actual_output")"
-  # echo -e $actual_output "\n" | strip_ansi_and_cr >> output.txt
-  # echo -e "$expected_output" | cat -A
-  # echo -e "$actual_output"   | cat -A
-  # echo
+
+  # 3) Trim empty lines
+  actual_output="$(printf '%s\n' "$actual_output" | sed '/^$/d')"
 
   # 4) If valgrind is enabled, capture the full leaks summary.
   local leaks_output="No leaks detected"
