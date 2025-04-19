@@ -1,0 +1,400 @@
+echo | cat -e
+echo  | cat -e
+echo   | cat -e
+echo    | cat -e
+echo     | cat -e
+echo             | cat -e
+echo "" | cat -e
+echo " " | cat -e
+echo "  " | cat -e
+echo "       " | cat -e
+echo ""| cat -e
+echo " "| cat -e
+echo "  "| cat -e
+echo "       "| cat -e
+echo """"| cat -e
+echo "" ""| cat -e
+echo ""  ""| cat -e
+echo ""   ""| cat -e
+echo ""        ""| cat -e
+echo """" | cat -e
+echo "" "" | cat -e
+echo ""  "" | cat -e
+echo ""   "" | cat -e
+echo ""        "" | cat -e
+echo " """| cat -e
+echo " " ""| cat -e
+echo " "   ""| cat -e
+echo "   " ""| cat -e
+echo "   "   ""| cat -e
+echo """ "| cat -e
+echo "" " "| cat -e
+echo ""   " "| cat -e
+echo "" "   "| cat -e
+echo ""   "   "| cat -e
+echo " """ | cat -e
+echo " " "" | cat -e
+echo " "   "" | cat -e
+echo "   " "" | cat -e
+echo "   "   "" | cat -e
+echo """ " | cat -e
+echo "" " " | cat -e
+echo ""   " " | cat -e
+echo "" "   " | cat -e
+echo ""   "   " | cat -e
+echo " "" " | cat -e
+echo "   "" " | cat -e
+echo " ""   " | cat -e
+echo "   ""   " | cat -e
+echo " " " " | cat -e
+echo "   " " " | cat -e
+echo " " "   " | cat -e
+echo "   " "   " | cat -e
+echo " "   " " | cat -e
+echo "   "   " " | cat -e
+echo " "   "   " | cat -e
+echo "   "   "   " | cat -e
+echo '' | cat -e
+echo ' ' | cat -e
+echo '  ' | cat -e
+echo '       ' | cat -e
+echo ''| cat -e
+echo ' '| cat -e
+echo '  '| cat -e
+echo '       '| cat -e
+echo ''''| cat -e
+echo '' ''| cat -e
+echo ''  ''| cat -e
+echo ''   ''| cat -e
+echo ''        ''| cat -e
+echo '''' | cat -e
+echo '' '' | cat -e
+echo ''  '' | cat -e
+echo ''   '' | cat -e
+echo ''        '' | cat -e
+echo ' '''| cat -e
+echo ' ' ''| cat -e
+echo ' '   ''| cat -e
+echo '   ' ''| cat -e
+echo '   '   ''| cat -e
+echo ''' '| cat -e
+echo '' ' '| cat -e
+echo ''   ' '| cat -e
+echo '' '   '| cat -e
+echo ''   '   '| cat -e
+echo ' ''' | cat -e
+echo ' ' '' | cat -e
+echo ' '   '' | cat -e
+echo '   ' '' | cat -e
+echo '   '   '' | cat -e
+echo ''' ' | cat -e
+echo '' ' ' | cat -e
+echo ''   ' ' | cat -e
+echo '' '   ' | cat -e
+echo ''   '   ' | cat -e
+echo ' '' ' | cat -e
+echo '   '' ' | cat -e
+echo ' ''   ' | cat -e
+echo '   ''   ' | cat -e
+echo ' ' ' ' | cat -e
+echo '   ' ' ' | cat -e
+echo ' ' '   ' | cat -e
+echo '   ' '   ' | cat -e
+echo ' '   ' ' | cat -e
+echo '   '   ' ' | cat -e
+echo ' '   '   ' | cat -e
+echo '   '   '   ' | cat -e
+echo ""''""| cat -e
+echo "" '' ""| cat -e
+echo ""  ''  ""| cat -e
+echo ""   ''   ""| cat -e
+echo ""        ''        ""| cat -e
+echo ""''"" | cat -e
+echo "" '' "" | cat -e
+echo ""  ''  "" | cat -e
+echo ""   ''   "" | cat -e
+echo ""        ''        "" | cat -e
+echo " "''""| cat -e
+echo " "'' ""| cat -e
+echo " "''   ""| cat -e
+echo "   "'' ""| cat -e
+echo "   "''   ""| cat -e
+echo ""''" "| cat -e
+echo "" ''" "| cat -e
+echo ""   ''" "| cat -e
+echo "" ''"   "| cat -e
+echo ""   ''"   "| cat -e
+echo " "''"" | cat -e
+echo " "'' "" | cat -e
+echo " "''   "" | cat -e
+echo "   "'' "" | cat -e
+echo "   "''   "" | cat -e
+echo ""''" " | cat -e
+echo "" ''" " | cat -e
+echo ""   ''" " | cat -e
+echo "" ''"   " | cat -e
+echo ""   ''"   " | cat -e
+echo " "''" " | cat -e
+echo "   "''" " | cat -e
+echo " "''"   " | cat -e
+echo "   "''"   " | cat -e
+echo " " ''" " | cat -e
+echo "   "'' " " | cat -e
+echo " " ''"   " | cat -e
+echo "   "'' "   " | cat -e
+echo " "   ''" " | cat -e
+echo "   "''   " " | cat -e
+echo " "''   "   " | cat -e
+echo "   "   ''"   " | cat -e
+echo "a" | cat -e
+echo "a " | cat -e
+echo "  a" | cat -e
+echo "   a    " | cat -e
+echo "a"| cat -e
+echo " a"| cat -e
+echo " a "| cat -e
+echo "a       "| cat -e
+echo "a""b"| cat -e
+echo "a" "b"| cat -e
+echo "a"  "b"| cat -e
+echo "a" b  "c"| cat -e
+echo "a"        b"c"| cat -e
+echo " a""b"| cat -e
+echo "a " "b"| cat -e
+echo "a "   "b"| cat -e
+echo "  a " "b"| cat -e
+echo "   a"   "b"| cat -e
+echo "a""b "| cat -e
+echo "a" " b"| cat -e
+echo "a"   "b "| cat -e
+echo "a" "   b"| cat -e
+echo "a"   "  b "| cat -e
+echo "a""b" | cat -e
+echo "a " "b" | cat -e
+echo " a"   "b" | cat -e
+echo "   a" "b" | cat -e
+echo " a  "   "b" | cat -e
+echo "a""b " | cat -e
+echo "a" " b" | cat -e
+echo "a"   "b " | cat -e
+echo "a" "   b" | cat -e
+echo "a"   " b  " | cat -e
+echo " a""b " | cat -e
+echo "a   "" b" | cat -e
+echo "a ""b   " | cat -e
+echo "   a""   b" | cat -e
+echo "  a "" b  " | cat -e
+echo " a" "b " | cat -e
+echo " a  " " b" | cat -e
+echo "a " " b  " | cat -e
+echo "  a " "b   " | cat -e
+echo "a "   " b" | cat -e
+echo "   a"   " b" | cat -e
+echo "a "   "b   " | cat -e
+echo "  a "   "b   " | cat -e
+echo a | cat -e
+echo a  | cat -e
+echo   a | cat -e
+echo    a     | cat -e
+echo a| cat -e
+echo  a| cat -e
+echo  a | cat -e
+echo a       | cat -e
+echo ab| cat -e
+echo a b| cat -e
+echo a  b| cat -e
+echo a b  c| cat -e
+echo a        bc| cat -e
+echo  ab| cat -e
+echo a  b| cat -e
+echo a    b| cat -e
+echo   a  b| cat -e
+echo    a   b| cat -e
+echo ab | cat -e
+echo a  b| cat -e
+echo a   b | cat -e
+echo a    b| cat -e
+echo a     b | cat -e
+echo ab | cat -e
+echo a  b | cat -e
+echo  a   b | cat -e
+echo    a b | cat -e
+echo  a     b | cat -e
+echo ab  | cat -e
+echo a  b | cat -e
+echo a   b  | cat -e
+echo a    b | cat -e
+echo a    b   | cat -e
+echo  ab  | cat -e
+echo a    b | cat -e
+echo a b    | cat -e
+echo    a   b | cat -e
+echo   a  b   | cat -e
+echo  a b  | cat -e
+echo  a    b | cat -e
+echo a   b   | cat -e
+echo   a  b    | cat -e
+echo a     b | cat -e
+echo    a    b | cat -e
+echo a    b    | cat -e
+echo   a    b    | cat -e
+echo "$USER" | cat -e
+echo "$USER " | cat -e
+echo "  $USER" | cat -e
+echo "   $USER    " | cat -e
+echo "$USER"| cat -e
+echo " $USER"| cat -e
+echo " $USER "| cat -e
+echo "$USER       "| cat -e
+echo "$USER""b"| cat -e
+echo "$USER" "b"| cat -e
+echo "$USER"  "b"| cat -e
+echo "$USER" b  "c"| cat -e
+echo "$USER"        b"c"| cat -e
+echo ' $USER'"b"| cat -e
+echo '$USER ' "b"| cat -e
+echo '$USER '   "b"| cat -e
+echo '  $USER ' "b"| cat -e
+echo '   $USER'   "b"| cat -e
+echo "a"'$USER '| cat -e
+echo "a" ' $USER'| cat -e
+echo "a"   '$USER '| cat -e
+echo "a" '   $USER'| cat -e
+echo "a"   '  $USER '| cat -e
+echo  $USER"b"| cat -e
+echo $USER  "b"| cat -e
+echo  $USER    "b"| cat -e
+echo   $USER  "b"| cat -e
+echo    $USER   "b"| cat -e
+echo "a"$USER | cat -e
+echo "a"  $USER| cat -e
+echo "a"   $USER | cat -e
+echo "a"    $USER| cat -e
+echo "a"     $USER | cat -e
+echo ' $USER'"$USER"| cat -e
+echo '$USER ' "$USER"| cat -e
+echo '$USER '   "$USER"| cat -e
+echo '  $USER ' "$USER"| cat -e
+echo '   $USER'   "$USER"| cat -e
+echo "$USER"'$USER '| cat -e
+echo "$USER" ' $USER'| cat -e
+echo "$USER"   '$USER '| cat -e
+echo "$USER" '   $USER'| cat -e
+echo "$USER"   '  $USER '| cat -e
+echo ' $USER'"$"| cat -e
+echo '$USER ' "$"| cat -e
+echo '$USER '   "$"| cat -e
+echo '  $USER ' "$"| cat -e
+echo '   $USER'   "$"| cat -e
+echo "$USER"'$ '| cat -e
+echo "$USER" ' $'| cat -e
+echo "$USER"   '$ '| cat -e
+echo "$USER" '   $'| cat -e
+echo "$USER"   '  $ '| cat -e
+echo ' $USER$'"$USER$"| cat -e
+echo '$USER$ ' "$USER$"| cat -e
+echo '$USER$ '   "$USER$"| cat -e
+echo '  $USER$ ' "$USER$"| cat -e
+echo '   $USER$'   "$USER$"| cat -e
+echo "$USER$"'$USER$ '| cat -e
+echo "$USER$" ' $USER$'| cat -e
+echo "$USER$"   '$USER$ '| cat -e
+echo "$USER$" '   $USER$'| cat -e
+echo "$USER$"   '  $USER$ '| cat -e
+echo ' $$USER'"$$USER"| cat -e
+echo '$$USER ' "$$USER"| cat -e
+echo '$$USER '   "$$USER"| cat -e
+echo '  $$USER ' "$$USER"| cat -e
+echo '   $$USER'   "$$USER"| cat -e
+echo "$$USER"'$$USER '| cat -e
+echo "$$USER" ' $$USER'| cat -e
+echo "$$USER"   '$$USER '| cat -e
+echo "$$USER" '   $$USER'| cat -e
+echo "$$USER"   '  $$USER '| cat -e
+echo $' $$USER'$"$$USER"| cat -e
+echo $'$$USER ' $"$$USER"| cat -e
+echo $'$$USER '   $"$$USER"| cat -e
+echo $'  $$USER ' $"$$USER"| cat -e
+echo $'   $$USER'   $"$$USER"| cat -e
+echo $"$$USER"$'$$USER '| cat -e
+echo $"$$USER" $' $$USER'| cat -e
+echo $"$$USER"   $'$$USER '| cat -e
+echo $"$$USER" $'   $$USER'| cat -e
+echo $"$$USER"   $'  $$USER '| cat -e
+echo '$'"$"| cat -e
+echo ' $'"$"| cat -e
+echo '$ ' "$"| cat -e
+echo '$ '   "$"| cat -e
+echo '  $ ' "$"| cat -e
+echo '   $'   "$"| cat -e
+echo "$"'$ '| cat -e
+echo "$" ' $'| cat -e
+echo "$"   '$ '| cat -e
+echo "$" '   $'| cat -e
+echo "$"   '  $ '| cat -e
+echo $''$""| cat -e
+echo $' '$""| cat -e
+echo $' ' $""| cat -e
+echo $' '   $""| cat -e
+echo $'   ' $""| cat -e
+echo $'   '   $""| cat -e
+echo $""$' '| cat -e
+echo $"" $' '| cat -e
+echo $""   $' '| cat -e
+echo $"" $'   '| cat -e
+echo $""   $'   '| cat -e
+echo $'$'$"$"| cat -e
+echo $'$ '$"$"| cat -e
+echo $' $' $"$"| cat -e
+echo $' $'   $"$"| cat -e
+echo $' $  ' $"$"| cat -e
+echo $'$   '   $"$"| cat -e
+echo $"$"$'$ '| cat -e
+echo $"$" $' $'| cat -e
+echo $"$"   $'$ '| cat -e
+echo $"$" $' $  '| cat -e
+echo $"$"   $'$   '| cat -e
+echo a$' b$'c$"d$"| cat -e
+echo $'a$ ' $"a$"| cat -e
+echo $'b$ '   b$"b$"| cat -e
+echo c$'  c$ ' d$"d$"| cat -e
+echo e$'   f$'   a$"b$"| cat -e
+echo a$"b$"c$'d$ '| cat -e
+echo a$"b$" c$' d$'| cat -e
+echo a$"b$"   c$'d$ '| cat -e
+echo a$"b$" c$'   d$'| cat -e
+echo a$"b$"   c$'  d$ '| cat -e
+echo '$$'"$$"| cat -e
+echo ' $$'"$$"| cat -e
+echo '$$ ' "$$"| cat -e
+echo '$$ '   "$$"| cat -e
+echo '  $$ ' "$$"| cat -e
+echo '   $$'   "$$"| cat -e
+echo "$$"'$$ '| cat -e
+echo "$$" ' $$'| cat -e
+echo "$$"   '$$ '| cat -e
+echo "$$" '   $$'| cat -e
+echo "$$"   '  $$ '| cat -e
+echo $$''$$""| cat -e
+echo $$' '$$""| cat -e
+echo $$' ' $$""| cat -e
+echo $$' '   $$""| cat -e
+echo $$'   ' $$""| cat -e
+echo $$'   '   $$""| cat -e
+echo $$""$$' '| cat -e
+echo $$"" $$' '| cat -e
+echo $$""   $$' '| cat -e
+echo $$"" $$'   '| cat -e
+echo $$""   $$'   '| cat -e
+echo $$'$$'$$"$$"| cat -e
+echo $$'$$ '$$"$$"| cat -e
+echo $$' $$' $$"$$"| cat -e
+echo $$' $$'   $$"$$"| cat -e
+echo $$' $$  ' $$"$$"| cat -e
+echo $$'$$   '   $$"$$"| cat -e
+echo $$"$$"$$'$$ '| cat -e
+echo $$"$$" $$' $$'| cat -e
+echo $$"$$"   $$'$$ '| cat -e
+echo $$"$$" $$' $$  '| cat -e
+echo $$"$$"   $$'$$   '| cat -e
+echo $?"$?"   $?'$?   '| cat -e
