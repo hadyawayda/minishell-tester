@@ -15,11 +15,10 @@ sudo apt install gcc -y
 sudo apt install libreadline-dev
 ```
 
-#### For windows users only
+#### For windows users only (if getting \r errors)
 
 ```bash
-sudo apt install dos2unix
-dos2unix * */* */*/* */*/*/*
+sed -i 's/\r$//' tester.sh
 ```
 
 ### 3. Install dependencies

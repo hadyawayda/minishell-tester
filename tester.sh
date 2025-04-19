@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # set -euo pipefail
 
+find "$(dirname "$0")/modules" -type f -name '*.sh' -exec sed -i 's/\r$//' {} +
+
 # ===============================
 # Global path definitions
 # ===============================
