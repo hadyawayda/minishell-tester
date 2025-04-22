@@ -24,8 +24,8 @@ tokenization_tester_menu() {
             a) execute_test "tokenization" "all" "false" ;;
             b) execute_test "tokenization" "all" "true" ;;
 			c) run_all_tokenization_cases ;; 
-            1) execute_test "tokenization" "echo.xlsx";;
-            2) execute_test "tokenization" "cd.xlsx" ;;
+            1) execute_test "tokenization" "quotations.xlsx";;
+            2) execute_test "tokenization" "quotations_advanced.xlsx" ;;
             3) execute_test "tokenization" "execution.xlsx" ;;
             4) execute_test "tokenization" "redirections.xlsx" ;;
             5) execute_test "tokenization" "exit.xlsx" ;;

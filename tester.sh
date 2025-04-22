@@ -40,6 +40,7 @@ declare -g TOTAL_TESTS=0
 # Load external scripts
 source ./modules/case_tester.sh
 source ./modules/csv_parser.sh
+source ./modules/execution_helper.sh
 source ./modules/minishell_tester.sh
 source ./modules/parsing_tester.sh
 source ./modules/settings_menu.sh

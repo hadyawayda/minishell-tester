@@ -88,12 +88,9 @@ execute_test() {
 
     # Determine test directory based on test type
     if [[ "$test_type" == "program" ]]; then
-         test_dir="$PROGRAM_TEST_DIR"
+        test_dir="$PROGRAM_TEST_DIR"
     elif [[ "$test_type" == "tokenization" ]]; then
-         test_dir="$TOKENIZATION_TEST_DIR"
-    else
-         echo "Invalid test type: $test_type"
-         return 1
+        test_dir="$TOKENIZATION_TEST_DIR"
     fi
 
     # Create and enter the isolated execution directory

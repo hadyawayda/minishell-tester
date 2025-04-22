@@ -6,18 +6,15 @@ run_all_tokenization_cases () {
 	# Configuration
 	#########################
 	
-	INPUT_FILE="test_files/tokenization/tokenizer_cases.txt"
-	EXPECTED_FILE="test_files/tokenization/tokenizer_cases_expected_output.txt"
-	MINISHELL="../minishell_test"  # Adjust if your binary name differs
+	INPUT_FILE="$TEST_FILES_DIR/tokenization/tokenizer_cases.txt"
+	EXPECTED_FILE="$TEST_FILES_DIR/tokenization/tokenizer_cases_expected_output.txt"
+	MINISHELL="$ROOT_DIR/minishell_test"  # Adjust if your binary name differs
 	
 	if [[ ! -x "$MINISHELL" ]]; then
 		cd ..
 		make te
-		cd tester
+		cd minishell-tester
 	fi
-
-	# ANSI color codes
-	RESET="\033[0m"
 
 	clear
 
@@ -104,23 +101,23 @@ run_all_tokenization_cases () {
 
 	# Print results with colors
 	if $overall_pass; then
-	echo -e "${GREEN} Test #$test_index${RESET}   Command:  [${cmd}]"
+	echo -e "${GREEN} Test #$test_index${NC}   Command:  [${cmd}]"
 	else
-	echo -e "${RED} Test #$test_index${RESET}   Command:  [${cmd}]"
+	echo -e "${RED} Test #$test_index${NC}   Command:  [${cmd}]"
 	fi
 
 	# Line 1
 	if $pass_line1; then
-	echo -e "${GREEN}Line1:${RESET}     Expected: [${GREEN}${exp_line1}${RESET}] Actual: [${GREEN}${actual_line1}${RESET}]"
+	echo -e "${GREEN}Line1:${NC}     Expected: [${GREEN}${exp_line1}${NC}] Actual: [${GREEN}${actual_line1}${NC}]"
 	else
-	echo -e "${RED}Line1:${RESET}     Expected: [${GREEN}${exp_line1}${RESET}],  Actual: [${RED}${actual_line1}${RESET}]"
+	echo -e "${RED}Line1:${NC}     Expected: [${GREEN}${exp_line1}${NC}],  Actual: [${RED}${actual_line1}${NC}]"
 	fi
 
 	# Line 2
 	if $pass_line2; then
-	echo -e "${GREEN}Line2:${RESET}     Expected: [${GREEN}${exp_line2}${RESET}] Actual: [${GREEN}${actual_line2}${RESET}]"
+	echo -e "${GREEN}Line2:${NC}     Expected: [${GREEN}${exp_line2}${NC}] Actual: [${GREEN}${actual_line2}${NC}]"
 	else
-	echo -e "${RED}Line2:${RESET}     Expected: [${GREEN}${exp_line2}${RESET}],  Actual: [${RED}${actual_line2}${RESET}]"
+	echo -e "${RED}Line2:${NC}     Expected: [${GREEN}${exp_line2}${NC}],  Actual: [${RED}${actual_line2}${NC}]"
 	fi
 
 	echo
@@ -130,8 +127,8 @@ run_all_tokenization_cases () {
 
 	rm -f .line_tmp 2>/dev/null
 
-	echo -e "${GREEN}All done.${RESET}"
-	echo -e "Passed ${GREEN}${passed_tests}${RESET} out of ${total_tests} tests."
+	echo -e "${GREEN}All done.${NC}"
+	echo -e "Passed ${GREEN}${passed_tests}${NC} out of ${total_tests} tests."
 
 	echo -e
 	read -n 1 -rsp "Press any key to continue"
