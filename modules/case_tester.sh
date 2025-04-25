@@ -26,7 +26,7 @@ run_test_case() {
     fi
 
     # Execute the test cases (assuming execute_test_cases is defined elsewhere)
-    execute_test_cases "$input_csv" "$VALGRIND_ENABLED" "$file"
+    execute_test_cases "$input_csv" "$VALGRIND_ENABLED" "$file" "$output_csv"
 
     if [[ "$no_pause" != "true" ]]; then
         echo -ne "\\n"
@@ -40,7 +40,7 @@ run_all_cases() {
     local no_pause="$2"
 
     clear
-    
+
     local files=("$test_dir"/*.xlsx)
     if [[ "${files[0]}" == "$test_dir/*.xlsx" || ${#files[@]} -eq 0 ]]; then
         echo -e "${RED}\\nNo test files found in '$test_dir'.${NC}"
@@ -74,9 +74,8 @@ run_all_cases() {
 execute_test() {
     PASSED_TESTS=0
     TOTAL_TESTS=0
-    local test_type="$1"
-    local test_arg="$2"
-    local no_pause="$3"
+    local test_arg="$1"
+    local no_pause="$2"
     local original_dir="$(pwd)"
     local test_dir
 
@@ -87,9 +86,9 @@ execute_test() {
 	> "$FAILED_SUMMARY_FILE"
 
     # Determine test directory based on test type
-    if [[ "$test_type" == "program" ]]; then
+    if [[ "$TEST_TYPE" == "program" ]]; then
         test_dir="$PROGRAM_TEST_DIR"
-    elif [[ "$test_type" == "tokenization" ]]; then
+    elif [[ "$TEST_TYPE" == "tokenization" ]]; then
         test_dir="$TOKENIZATION_TEST_DIR"
     fi
 
@@ -97,10 +96,10 @@ execute_test() {
     mkdir -p "$EXECUTION_DIR"
     mkdir -p "$BASH_EXECUTION_DIR"
     mkdir -p "$CONVERTED_FILES_DIR"
-    cp "$ROOT_DIR/minishell" "$EXECUTION_DIR"
-    cp "$ROOT_DIR/minishell" "$BASH_EXECUTION_DIR"
-    chmod +x $EXECUTION_DIR/minishell
-    chmod +x $BASH_EXECUTION_DIR/minishell
+    cp "$ROOT_DIR/$EXECUTABLE_NAME" "$EXECUTION_DIR"
+    cp "$ROOT_DIR/$EXECUTABLE_NAME" "$BASH_EXECUTION_DIR"
+    chmod +x $EXECUTION_DIR/$EXECUTABLE_NAME
+    chmod +x $BASH_EXECUTION_DIR/$EXECUTABLE_NAME
     cd "$EXECUTION_DIR" || { echo "Cannot enter execution directory"; return 1; }
 
     if [[ "$test_arg" == "all" ]]; then

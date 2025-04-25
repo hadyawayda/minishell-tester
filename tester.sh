@@ -36,19 +36,18 @@ FAILED_SUMMARY_FILE="$FAILED_TESTS_SUMMARY_DIR/failed_summary.txt"
 # Global counters
 declare -g PASSED_TESTS=0
 declare -g TOTAL_TESTS=0
+declare -g TEST_TYPE="program"
 
 # Load external scripts
 source ./modules/case_tester.sh
 source ./modules/csv_parser.sh
 source ./modules/execution_helper.sh
 source ./modules/minishell_tester.sh
-source ./modules/parsing_tester.sh
 source ./modules/settings_menu.sh
 source ./modules/summary_parser.sh
 source ./modules/test_execution.sh
 source ./modules/tokenization_tester_script.sh
 source ./modules/tokenization_tester.sh
-source ./modules/valgrind_tester.sh
 
 # Load Configuration
 CONFIG_FILE="./config/tester_config.ini"
@@ -59,16 +58,18 @@ if [[ ! -f "$CONFIG_FILE" ]]; then
             PROGRAM_PROMPT="$value"
         fi
     done < "$CONFIG_FILE"
-	echo "PROGRAM_PROMPT=\"\"" >> "$CONFIG_FILE"
-    echo "VALGRIND_ENABLED=\"0\"" >> "$CONFIG_FILE"
     echo "DEBUGGING=\"0\"" >> "$CONFIG_FILE"
-    echo "CUMULATIVE_TESTING=\"0\"" >> "$CONFIG_FILE"
+    echo "CASE_DIFFICULTY=\"1\"" >> "$CONFIG_FILE"
+    echo "VALGRIND_ENABLED=\"0\"" >> "$CONFIG_FILE"
     echo "BONUS_TESTING_ENABLED=\"0\"" >> "$CONFIG_FILE"
+    echo "CUMULATIVE_TESTING=\"0\"" >> "$CONFIG_FILE"
+	echo "PROGRAM_PROMPT=\"\"" >> "$CONFIG_FILE"
+	echo "EXECUTABLE_NAME=\"\"" >> "$CONFIG_FILE"
 fi
 
 source "$CONFIG_FILE"
 
-chmod +x $ROOT_DIR/minishell
+chmod +x $ROOT_DIR/$EXECUTABLE_NAME
 
 # Color Codes
 RED='\033[0;31m'
@@ -91,13 +92,26 @@ echo -e "Please ensure you have the necessary test files in the correct format (
 if [[ -n "${PROGRAM_PROMPT}" ]]; then
     echo -e "Using pre-configured program prompt name: \\n\\n${CYAN}${PROGRAM_PROMPT}"
 	echo -e "\\n${GREEN}To change this, run the settings menu."
-    echo -e "\\n${CYAN}Press any key to continue..."
+    echo -ne "\\n${CYAN}Press any key to continue..."
     read -n 1 -s
 else
     echo -e "${GREEN}Enter the program prompt name (e.g. 'Minishell>'): \\n"
     echo -ne "${CYAN}$> "
     read -r PROGRAM_PROMPT
     update_config_key "PROGRAM_PROMPT" "$PROGRAM_PROMPT" "$CONFIG_FILE"
+    
+    if [[ -n "${EXECUTABLE_NAME}" ]]; then
+        echo -e "Using pre-configured executable name: \\n\\n${CYAN}${EXECUTABLE_NAME}"
+        echo -e "\\n${GREEN}To change this, run the settings menu."
+        echo -e "\\n${CYAN}Press any key to continue..."
+        read -n 1 -s
+    else
+        echo
+        echo -e "${GREEN}Enter the executable binary name (e.g. 'minishell'): \\n"
+        echo -ne "${CYAN}$> "
+        read -r EXECUTABLE_NAME
+        update_config_key "EXECUTABLE_NAME" "$EXECUTABLE_NAME" "$CONFIG_FILE"
+    fi
 fi
 
 # Main Menu

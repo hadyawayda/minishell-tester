@@ -1,16 +1,10 @@
 #!/usr/bin/env bash
 
 run_one_case() {
-  local cmd_block="$1" test_index="$2" valgrind_enabled="$3" file="$4"
-  local expected_override="${5-}"
+  local cmd_block="$1" expected_output="$2" test_index="$3" valgrind_enabled="$4" file="$5"
 
   # 1) Compute expected output using bash
-  local expected_output
-  if [[ -n "$expected_override" ]]; then
-    expected_output="$expected_override"
-  else
-    expected_output="$(echo -e "$cmd_block" | bash 2>&1)"
-  fi
+  local expected_output="$(echo -e "$cmd_block" | bash 2>&1)"
   cd "$EXECUTION_DIR"
 
   # 2) Run your minishell on the same block
@@ -59,6 +53,7 @@ run_one_case() {
 
 execute_test_cases() {
   local input_csv="$1"
+  local output_csv="$4"
   local valgrind_enabled="$2"
   local test_index=1
   local delimiter="ǂ"
@@ -66,6 +61,9 @@ execute_test_cases() {
 
   # Open the input CSV using file descriptor 3
   exec 3< "$input_csv"
+  if [[ "${TEST_TYPE:-}" == "tokenization" ]]; then
+    exec 4< "$output_csv"
+  fi
 
   if [[ "${CUMULATIVE_TESTING:-0}" == "1" ]]; then
     # CUMULATIVE TESTING MODE: run the entire file as one big test block.
@@ -88,7 +86,9 @@ execute_test_cases() {
 
     TOTAL_TESTS=$((TOTAL_TESTS+1))
     
-    run_one_case "$full_block" "$test_index" "$valgrind_enabled" "$file"
+    local expected_output="$(echo -e "$full_block" | bash 2>&1)"
+
+    run_one_case "$full_block" "$expected_output" "$test_index" "$valgrind_enabled" "$file"
   else
     while true; do
       local test_block=""
@@ -121,6 +121,9 @@ execute_test_cases() {
       done
 
       if $skip_case; then
+        if [[ "${TEST_TYPE:-}" == "tokenization" ]]; then
+          read -r _dummy <&4
+        fi
         continue
       fi
 
@@ -135,11 +138,20 @@ execute_test_cases() {
       # We'll do that for the entire block
       local cleaned_block="$(echo "$test_block" | sed 's/^\$> //')"
 
+      # compute expected_output
+      local expected_output
+      if [[ "${TEST_TYPE:-}" == "tokenization" ]]; then
+        read -r expected_output <&4
+      else
+        expected_output="$(echo -e "$cleaned_block" | bash 2>&1)"
+      fi
+
       # run the entire block as one case
-      run_one_case "$cleaned_block" "$test_index" "$valgrind_enabled" "$file"
+      run_one_case "$cleaned_block" "$expected_output" "$test_index" "$valgrind_enabled" "$file"
       ((test_index++))
     done
   fi
 
-  exec 3<&- 4<&-
+  exec 3<&-
+  [[ -n "${output_csv:-}" ]] && exec 4<&-
 }

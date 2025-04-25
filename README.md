@@ -15,7 +15,7 @@ sudo apt install gcc -y
 sudo apt install libreadline-dev
 ```
 
-#### For windows users only (if getting \r errors)
+#### For windows users only (if getting Carriage Return '\r' errors)
 
 ```bash
 sed -i 's/\r$//' tester.sh

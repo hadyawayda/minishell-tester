@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 minishell_tester_menu() {
+    TEST_TYPE="program"
+
     while true; do
         clear
         echo -e "${BLUE}----- Minishell Tester -----${GREEN}"
@@ -20,17 +22,17 @@ minishell_tester_menu() {
     	read -n 1 -rp "Select an option: " choice
         
         case $choice in
-            a) execute_test "program" "all" "false" ;;
-            b) execute_test "program" "all" "true"  ;;
-            1) execute_test "program" "echo.xlsx"          ;;
-            2) execute_test "program" "cd.xlsx"            ;;
-            3) execute_test "program" "execution.xlsx"     ;;
-            4) execute_test "program" "redirections.xlsx"  ;;
-            5) execute_test "program" "exit.xlsx"          ;;
-            6) execute_test "program" "unset.xlsx" ;;
-            7) execute_test "program" "basic_cases.xlsx"   ;;
-            8) execute_test "program" "complex_cases.xlsx" ;;
-            9) execute_test "program" "export.xlsx" ;;
+            a) execute_test "all" "false" ;;
+            b) execute_test "all" "true"  ;;
+            1) execute_test "echo.xlsx"          ;;
+            2) execute_test "cd.xlsx"            ;;
+            3) execute_test "execution.xlsx"     ;;
+            4) execute_test "redirections.xlsx"  ;;
+            5) execute_test "exit.xlsx"          ;;
+            6) execute_test "unset.xlsx" ;;
+            7) execute_test "basic_cases.xlsx"   ;;
+            8) execute_test "complex_cases.xlsx" ;;
+            9) execute_test "export.xlsx" ;;
             f) break ;;
             *) echo -e "${RED}Invalid option.${NC}" ;;
         esac

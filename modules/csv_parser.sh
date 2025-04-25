@@ -9,64 +9,60 @@
 #   3. Appends `ǂ` after each row, ensuring multi-line fields remain intact.
 # Function to perform CSV conversion using Python
 
-python_csv_convert() {
-    local base_dir="$1"
-    local base_name="$2"
-    local delimiter="$3"
+# python_csv_convert() {
+#     local base_dir="$1"
+#     local base_name="$2"
+#     local delimiter="$3"
 
-    python3 <<EOF
-import csv
-base_dir = "$base_dir"
-delimiter = "$delimiter"
-base_name = "$base_name"
+#     python3 <<EOF
+# import csv
+# base_dir = "$base_dir"
+# delimiter = "$delimiter"
+# base_name = "$base_name"
 
-with open(f"{base_dir}/{base_name}_expected_input.csv") as infile, open(f"{base_dir}/{base_name}_input.csv", "w") as outfile:
-    for row in csv.reader(infile):
-        outfile.write((row[0] if row else "") + delimiter + "\n")
+# with open(f"{base_dir}/{base_name}_expected_input.csv") as infile, open(f"{base_dir}/{base_name}_input.csv", "w") as outfile:
+#     for row in csv.reader(infile):
+#         outfile.write((row[0] if row else "") + delimiter + "\n")
 
-with open(f"{base_dir}/{base_name}_expected_output.csv") as infile, open(f"{base_dir}/{base_name}_output.csv", "w") as outfile:
-    for row in csv.reader(infile):
-        outfile.write((row[0] if row else "") + delimiter + "\n")
-EOF
-}
+# with open(f"{base_dir}/{base_name}_expected_output.csv") as infile, open(f"{base_dir}/{base_name}_output.csv", "w") as outfile:
+#     for row in csv.reader(infile):
+#         outfile.write((row[0] if row else "") + delimiter + "\n")
+# EOF
+# }
 
 # Updated convert_excel_to_csv function leveraging global paths and checking for column 2
 convert_excel_to_csv() {
     local input_file="$1"
     local base_name
     base_name=$(basename "$input_file" .xlsx)
-    local delimiter="ǂ"
-    
-    mkdir -p "$CONVERTED_FILES_DIR" || { echo "Failed to create $CONVERTED_FILES_DIR"; return 1; }
+    mkdir -p "$CONVERTED_FILES_DIR" || return 1
 
+    # remove old files
     rm -f "$CONVERTED_FILES_DIR/${base_name}_input.csv" \
-          "$CONVERTED_FILES_DIR/${base_name}_output.csv" \
-          "$CONVERTED_FILES_DIR/${base_name}_expected_input.csv" \
-          "$CONVERTED_FILES_DIR/${base_name}_expected_output.csv"
-    
-    # Convert the entire Excel file to CSV once
-    local full_csv
-    full_csv=$(in2csv "$input_file")
-    
-    # Determine the number of columns from the header line
-    local header
-    header=$(echo "$full_csv" | head -n 1)
-    local num_columns
-    num_columns=$(echo "$header" | awk -F, '{print NF}')
-    
-    # Extract column 1 always
-    echo "$full_csv" | csvcut -c 1 > "$CONVERTED_FILES_DIR/${base_name}_expected_input.csv"
-    
-    # Extract column 2 only if it exists; otherwise, create an empty file
-    if [ "$num_columns" -ge 2 ]; then
-        echo "$full_csv" | csvcut -c 2 > "$CONVERTED_FILES_DIR/${base_name}_expected_output.csv"
-    else
-        > "$CONVERTED_FILES_DIR/${base_name}_expected_output.csv"
-    fi
+          "$CONVERTED_FILES_DIR/${base_name}_output.csv"
 
-    # Call the external Python conversion function
-    python_csv_convert "$CONVERTED_FILES_DIR" "$base_name" "$delimiter"
+    python3 <<EOF
+import openpyxl, os, sys
 
-    # Clean up temporary files
-    rm "$CONVERTED_FILES_DIR/${base_name}_expected_input.csv" "$CONVERTED_FILES_DIR/${base_name}_expected_output.csv"
+wb = openpyxl.load_workbook("$input_file", data_only=True)
+ws = wb.active
+
+out_dir = "$CONVERTED_FILES_DIR"
+delim = "ǂ"
+
+# open output files
+inp_path = os.path.join(out_dir, "${base_name}_input.csv")
+out_path = os.path.join(out_dir, "${base_name}_output.csv")
+
+with open(inp_path, "w", encoding="utf-8", newline="") as inf, \
+     open(out_path, "w", encoding="utf-8", newline="") as outf:
+    for row in ws.iter_rows(values_only=True):
+        # column 1
+        cell0 = row[0] if row and row[0] is not None else ""
+        # column 2 (if exists)
+        cell1 = row[1] if len(row) > 1 and row[1] is not None else ""
+        # write, preserving any embedded newlines
+        inf.write(str(cell0).replace("\\r\\n", "\\n") + delim + "\\n")
+        outf.write(str(cell1).replace("\\r\\n", "\\n") + delim + "\\n")
+EOF
 }
