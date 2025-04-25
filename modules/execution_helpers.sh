@@ -98,7 +98,7 @@ run_valgrind_check() {
   local cmd_block="$1"
   echo -e "$cmd_block" | \
     valgrind --leak-check=full --suppressions=$CONFIG_DIR/ignore_readline.supp \
-    "$ROOT_DIR/minishell" 2>&1
+    "$ROOT_DIR/$EXECUTABLE_NAME" 2>&1
 }
 
 compare_outputs() {

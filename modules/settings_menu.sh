@@ -52,7 +52,7 @@ settings_menu() {
                 update_config_key "CUMULATIVE_TESTING" "$CUMULATIVE_TESTING" "$CONFIG_FILE"
                 ;;
             5)
-				echo -ne "${BLUE}\\n\\nEnter new Program Prompt (e.g. Minishell>): ${GREEN}"
+				echo -ne "${BLUE}\\n\\nEnter new Program Prompt (e.g. Minishell >): ${GREEN}"
                 read -r PROGRAM_PROMPT
                 update_config_key "PROGRAM_PROMPT" "$PROGRAM_PROMPT" "$CONFIG_FILE"
                 ;;

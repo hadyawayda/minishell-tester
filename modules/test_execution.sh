@@ -4,15 +4,15 @@ run_one_case() {
   local cmd_block="$1" expected_output="$2" test_index="$3" valgrind_enabled="$4" file="$5"
 
   # 1) Compute expected output using bash
-  local expected_output="$(echo -e "$cmd_block" | bash 2>&1)"
   cd "$EXECUTION_DIR"
 
   # 2) Run your minishell on the same block
-  if [[ "$cmd_block" == *"| cat -e"*  || "$cmd_block" == *"|"* ]]; then
-    actual_output="$(echo -e "$cmd_block" | script -q -c "$ROOT_DIR/minishell" /dev/null 2>&1 | strip_ansi_and_cr)"
+  if [[ "${TEST_TYPE:-}" == "program" && ( "$cmd_block" == *"| cat -e"* || "$cmd_block" == *"|"* ) ]]; then
+    actual_output="$(echo -e "$cmd_block" | script -q -c "$ROOT_DIR/$EXECUTABLE_NAME" /dev/null 2>&1 | strip_ansi_and_cr)"
     actual_output="$(clean_interactive_output "$actual_output")"
   else
-    actual_output="$(echo -e "$cmd_block" | "$ROOT_DIR/minishell" 2>&1 | strip_ansi_and_cr)"
+    actual_output="$(echo -e "$cmd_block" | "$ROOT_DIR/$EXECUTABLE_NAME" 2>&1 | strip_ansi_and_cr)"
+    # echo "$actual_output"
     actual_output="$(clean_actual_output "$actual_output")"
   fi
 
@@ -142,8 +142,9 @@ execute_test_cases() {
       local expected_output
       if [[ "${TEST_TYPE:-}" == "tokenization" ]]; then
         read -r expected_output <&4
+        expected_output=${expected_output%ǂ}
       else
-        expected_output="$(echo -e "$cleaned_block" | bash 2>&1)"
+          expected_output="$(echo -e "$cleaned_block" | bash 2>&1)"
       fi
 
       # run the entire block as one case

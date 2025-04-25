@@ -41,7 +41,7 @@ declare -g TEST_TYPE="program"
 # Load external scripts
 source ./modules/case_tester.sh
 source ./modules/csv_parser.sh
-source ./modules/execution_helper.sh
+source ./modules/execution_helpers.sh
 source ./modules/minishell_tester.sh
 source ./modules/settings_menu.sh
 source ./modules/summary_parser.sh
