@@ -169,17 +169,38 @@ print_test_result() {
   local expected_color="$8"
   local actual_color="$9"
 
-  echo -ne "${header_color}Test #$test_index"
-  (( test_index > 9 )) && echo -ne "\t" || echo -ne "\t\t"
-  echo -e "[$cmd_block]"
+  #─── Test header md_block, with multi‐line indent ──────────────────────
+  printf "${header_color}Test #%s" "$test_index"
+  if (( test_index > 9 )); then
+    printf "\t"
+  else
+    printf "\t\t"
+  fi
+  # First line in brackets, indent all subsequent lines by 17 spaces
+  printf "[%s]\n" "$(
+    printf '%s\n' "$cmd_block" \
+      | sed '1! s/^/                 /'
+  )"
 
   if [[ "$DEBUGGING" == "1" ]]; then
-    echo -e "${expected_color}Expected:\t[${expected}]"
-    echo -e "${actual_color}Actual:\t\t[${actual}]"
+    # split expected into lines, print first with label, others indented under the '['
+    printf "${expected_color}Expected:\t"
+    printf "[%s]\n" "$(printf '%s\n' "$expected" \
+      | sed '1! s/^/                 /')"   # 16 spaces here to line up under the '['
+
+    # same for actual (use two tabs so it lines up under the '[' in Actual:)
+    printf "${actual_color}Actual:\t\t"
+    printf "[%s]\n" "$(printf '%s\n' "$actual" \
+      | sed '1! s/^/                 /')"
   fi
 
   if [[ "$valgrind_enabled" == "1" && "$leaks" -ne 0 ]]; then
-    echo -ne "${YELLOW}Leaks Summary:\t$leak_summary"
+    #─── Leaks Summary, multi‐line indent ────────────────────────────────────
+    printf "${YELLOW}Leaks Summary:\t"
+    printf "%s\n" "$(
+      printf '%s\n' "$leak_summary" \
+        | sed '1! s/^/                /'
+    )"
     [[ "$DEBUGGING" == "1" ]] && echo
   fi
 

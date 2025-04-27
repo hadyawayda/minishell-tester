@@ -21,11 +21,11 @@ settings_menu() {
         echo -e "${BLUE}----- Settings -----${GREEN}"
         echo -e "1) Toggle Debugging Logs (Current: ${BLUE}'$DEBUGGING'${GREEN})"
         echo -e "2) Set Case Difficulty (Current: ${BLUE}'$CASE_DIFFICULTY'${GREEN})"
-        echo -e "2) Toggle Valgrind usage (Current: ${BLUE}'$VALGRIND_ENABLED'${GREEN})"
-        echo -e "3) Toggle bonus testing (Current: ${BLUE}'$BONUS_TESTING_ENABLED'${GREEN})"
-        echo -e "4) Toggle cumulative testing inside the same instance - Better testing quality but errors are more likely to occur due to possibly poor memory management (Current: ${BLUE}'$CUMULATIVE_TESTING'${GREEN})"
-        echo -e "5) Set Program Prompt (Current: ${BLUE}'$PROGRAM_PROMPT'${GREEN})"
-        echo -e "6) Set Executable Binary Name (Current: ${BLUE}'$EXECUTABLE_NAME'${GREEN})"
+        echo -e "3) Toggle Valgrind usage (Current: ${BLUE}'$VALGRIND_ENABLED'${GREEN})"
+        echo -e "4) Toggle bonus testing (Current: ${BLUE}'$BONUS_TESTING_ENABLED'${GREEN})"
+        echo -e "5) Toggle cumulative testing inside the same instance - Better testing quality but errors are more likely to occur due to possibly poor memory management (Current: ${BLUE}'$CUMULATIVE_TESTING'${GREEN})"
+        echo -e "6) Set Program Prompt (Current: ${BLUE}'$PROGRAM_PROMPT'${GREEN})"
+        echo -e "7) Set Executable Binary Name (Current: ${BLUE}'$EXECUTABLE_NAME'${GREEN})"
         echo -e "${ORANGE}f) Return to Main Menu${GREEN}\\n"
         read -n 1 -rp "Select an option: " choice
 		
@@ -43,20 +43,20 @@ settings_menu() {
                 VALGRIND_ENABLED=$((1 - VALGRIND_ENABLED))
                 update_config_key "VALGRIND_ENABLED" "$VALGRIND_ENABLED" "$CONFIG_FILE"
                 ;;
-            3)
+            4)
                 BONUS_TESTING_ENABLED=$((1 - BONUS_TESTING_ENABLED))
                 update_config_key "BONUS_TESTING_ENABLED" "$BONUS_TESTING_ENABLED" "$CONFIG_FILE"
                 ;;
-            4)
+            5)
                 CUMULATIVE_TESTING=$((1 - CUMULATIVE_TESTING))
                 update_config_key "CUMULATIVE_TESTING" "$CUMULATIVE_TESTING" "$CONFIG_FILE"
                 ;;
-            5)
+            6)
 				echo -ne "${BLUE}\\n\\nEnter new Program Prompt (e.g. Minishell >): ${GREEN}"
                 read -r PROGRAM_PROMPT
                 update_config_key "PROGRAM_PROMPT" "$PROGRAM_PROMPT" "$CONFIG_FILE"
                 ;;
-            6)
+            7)
                 echo -ne "${BLUE}\\n\\nEnter new Executable Binary Name (e.g. minishell): ${GREEN}"
                 read -r EXECUTABLE_NAME
                 update_config_key "EXECUTABLE_NAME" "$EXECUTABLE_NAME" "$CONFIG_FILE"
