@@ -26,9 +26,9 @@ parse_leaks() {
   still_bytes=${still_bytes:-0}
 
   # If all categories are zero, output nothing.
-  if (( def_bytes == 0 && ind_bytes == 0 && pos_bytes == 0 && still_bytes == 0 )); then
-    return 0
-  fi
+  # if (( def_bytes == 0 && ind_bytes == 0 && pos_bytes == 0 && still_bytes == 0 )); then
+  #   return 0
+  # fi
 
   # Build the summary string for categories with nonzero leaks.
   local summary=""
@@ -195,13 +195,10 @@ print_test_result() {
   fi
 
   if [[ "$valgrind_enabled" == "1" && "$leaks" -ne 0 ]]; then
-    #─── Leaks Summary, multi‐line indent ────────────────────────────────────
+    #─── Leaks Summary, interpret “\n” and indent subsequent lines ────────────
     printf "${YELLOW}Leaks Summary:\t"
-    printf "%s\n" "$(
-      printf '%s\n' "$leak_summary" \
-        | sed '1! s/^/                /'
-    )"
-    [[ "$DEBUGGING" == "1" ]] && echo
+    # %b will expand the \n into real newlines; sed adds 17-space indent on lines 2+
+    printf '%b' "$leak_summary" | sed '1! s/^/                /'
   fi
 
   [[ "$DEBUGGING" == "1" ]] && echo
@@ -219,14 +216,39 @@ log_failure_if_needed() {
 
   if ! $pass; then
     {
-      echo -ne "$file test #$test_index:\t\t[$cmd_block]"
-      echo
-      [[ "$DEBUGGING" == "1" ]] && {
-        echo -e "Expected:\t\t[$expected]"
-        echo -e "Actual:\t\t\t[$actual]"
-      }
-      [[ "$valgrind_enabled" == "1" && "$leak_flag" -ne 0 ]] && echo -e "Leaks Summary:\t\t$leak_summary"
+      #─── Header + cmd_block (multi‐line indent) ────────────────────────────
+      #─── Failure header + cmd_block, fixed‐width 16 chars ──────────────────────
+      printf "%-23s [%s]\n" \
+        "$file #$test_index:" \
+        "$(
+          printf '%s\n' "$cmd_block" \
+            | sed '1! s/^/                         /'
+        )"
+
+      
+      if [[ "$DEBUGGING" == "1" ]]; then
+        # Expected
+        printf "Expected:\t\t[%s]\n" "$(
+          printf '%s\n' "$expected" | sed '1! s/^/                         /'
+        )"
+        # Actual
+        printf "Actual:\t\t\t[%s]\n" "$(
+          printf '%s\n' "$actual" | sed '1! s/^/                         /'
+        )"
+      fi
+
+      # Leaks Summary (only when real leaks exist)
+      if [[ "$valgrind_enabled" == "1" && "$leak_flag" -ne 0 ]]; then
+        # Print label, then expand \n and indent lines 2+
+        printf "Leaks Summary:\t\t"
+        printf '%b' "$leak_summary" | sed '1! s/^/                        /'
+        # ensure trailing newline
+        echo
+      fi
+
+      # blank line between failures
       echo
     } >> "$FAILED_SUMMARY_FILE"
   fi
 }
+
