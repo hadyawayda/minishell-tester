@@ -21,7 +21,7 @@ display_failed_summary() {
     ############################################################
     while IFS= read -r line <&3; do
       # If line matches:  ^[^[:space:]]+[[:space:]]+test[[:space:]]+#[0-9]+, red
-      if [[ "$line" =~ ^[^[:space:]]+[[:space:]]+test[[:space:]]+#[0-9]+: ]]; then
+      if [[ "$line" =~ ^[^[:space:]]+[[:space:]]+#[0-9]+: ]]; then
         state="header"
         echo -ne "${RED}$line"
         continue
@@ -52,7 +52,7 @@ display_failed_summary() {
     while IFS= read -r line <&3; do
       # If line matches:  ^[^[:space:]]+[[:space:]]+test[[:space:]]+#[0-9]+:
       # => header (blue)
-      if [[ "$line" =~ ^[^[:space:]]+[[:space:]]+test[[:space:]]+#[0-9]+: ]]; then
+      if [[ "$line" =~ ^[^[:space:]]+[[:space:]]+#[0-9]+: ]]; then
         state="header"
         echo -e "${BLUE}$line"
         continue
