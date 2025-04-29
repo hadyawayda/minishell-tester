@@ -13,20 +13,21 @@ run_test_case() {
 
     local input_csv="$CONVERTED_FILES_DIR/${filename_base}_input.csv"
     local output_csv="$CONVERTED_FILES_DIR/${filename_base}_output.csv"
+    local diff_csv="$CONVERTED_FILES_DIR/${filename_base}_difficulty.csv"
 
     # Convert Excel to CSV if needed
-    if [[ ! -f "$input_csv" || ! -f "$output_csv" ]]; then
+    if [[ ! -f "$input_csv" || ! -f "$output_csv" || ! -f "$diff_csv" ]]; then
         convert_excel_to_csv "$(realpath "$file")" || return 1
     fi
 
     # Confirm CSV files exist
-    if [[ ! -f "$input_csv" || ! -f "$output_csv" ]]; then
+    if [[ ! -f "$input_csv" || ! -f "$output_csv" || ! -f "$diff_csv" ]]; then
         echo -e "${RED}CSV files missing after conversion.${NC}"
         return 1
     fi
 
     # Execute the test cases (assuming execute_test_cases is defined elsewhere)
-    execute_test_cases "$input_csv" "$VALGRIND_ENABLED" "$file" "$output_csv"
+    execute_test_cases "$input_csv" "$VALGRIND_ENABLED" "$file" "$output_csv" "$diff_csv"
 
     if [[ "$no_pause" != "true" ]]; then
         echo -ne "\\n"

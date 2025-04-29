@@ -35,7 +35,7 @@ settings_menu() {
                 update_config_key "DEBUGGING" "$DEBUGGING" "$CONFIG_FILE"
                 ;;
             2)
-                echo -ne "${BLUE}\\n\\nEnter new Case Difficulty (from 1 to 5): ${GREEN}"
+                echo -ne "${BLUE}\\n\\nEnter new Case Difficulty (from 1 to 5, 0 to ignore difficulty): ${GREEN}"
                 read -r CASE_DIFFICULTY
                 update_config_key "CASE_DIFFICULTY" "$CASE_DIFFICULTY" "$CONFIG_FILE"
                 ;;

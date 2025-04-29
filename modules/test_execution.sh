@@ -12,7 +12,6 @@ run_one_case() {
     actual_output="$(clean_interactive_output "$actual_output")"
   else
     actual_output="$(echo -e "$cmd_block" | "$ROOT_DIR/$EXECUTABLE_NAME" 2>&1 | strip_ansi_and_cr)"
-    # echo "$actual_output"
     actual_output="$(clean_actual_output "$actual_output")"
   fi
 
@@ -54,6 +53,7 @@ run_one_case() {
 execute_test_cases() {
   local input_csv="$1"
   local output_csv="$4"
+  local diff_csv="$5"
   local valgrind_enabled="$2"
   local test_index=1
   local delimiter="ǂ"
@@ -61,9 +61,8 @@ execute_test_cases() {
 
   # Open the input CSV using file descriptor 3
   exec 3< "$input_csv"
-  if [[ "${TEST_TYPE:-}" == "tokenization" ]]; then
-    exec 4< "$output_csv"
-  fi
+  [[ "$TEST_TYPE" == "tokenization" ]] && exec 4< "$output_csv"
+  exec 5< "$diff_csv"
 
   if [[ "${CUMULATIVE_TESTING:-0}" == "1" ]]; then
     # CUMULATIVE TESTING MODE: run the entire file as one big test block.
@@ -130,6 +129,22 @@ execute_test_cases() {
       # If we didn't accumulate anything, we might be at EOF
       if [[ -z "$test_block" ]]; then
         break
+      fi
+
+      local difficulty
+      read -r difficulty <&5
+      difficulty="${difficulty%$delimiter}"
+
+      # 1) Skip if no difficulty column
+      if [[ -z "$difficulty" ]]; then
+        (( test_index++ ))
+        continue
+      fi
+
+      # 2) If CASE_DIFFICULTY > 0 and this case is harder, skip
+      if (( CASE_DIFFICULTY != 0 && difficulty > CASE_DIFFICULTY )); then
+        (( test_index++ ))
+        continue
       fi
 
       TOTAL_TESTS=$((TOTAL_TESTS+1))
