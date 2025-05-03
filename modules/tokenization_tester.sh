@@ -4,9 +4,9 @@ tokenization_tester_menu() {
     TEST_TYPE="tokenization"
 
     while true; do
-        # clear
+        clear
         echo -e "${BLUE}----- Tokenization Tester -----${NC}"
-        echo -e "${GREEN}a) ${BLUE}Expansion (410 Cases)${GREEN}"
+        echo -e "${GREEN}d) ${CYAN}Expansion (410 Cases)${GREEN}"
         echo -e "1) Echo (118 Cases)"
         echo -e "2) CD (56 Cases)"
         echo -e "3) Execution (52 Cases)"
@@ -25,7 +25,7 @@ tokenization_tester_menu() {
         read -n 1 -rp "Select an option: " choice
 
         case $choice in
-            a) execute_test "expansion.xlsx"                    ;;
+            d) execute_test "expansion.xlsx"                    ;;
             1) execute_test "../program/echo_expansion.xlsx"    ;;
             2) execute_test "../program/cd.xlsx"                ;;
             3) execute_test "../program/execution.xlsx"         ;;
