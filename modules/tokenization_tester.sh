@@ -4,13 +4,10 @@ tokenization_tester_menu() {
     TEST_TYPE="tokenization"
 
     while true; do
-        clear
+        # clear
         echo -e "${BLUE}----- Tokenization Tester -----${NC}"
-        echo -e "${GREEN}a) ${CYAN}Run All Cases (Interactive, 616+ Cases)"
-        echo -e "${GREEN}b) ${CYAN}Run All Cases (No Pause, 616+ Cases)"
-        echo -e "${GREEN}c) ${CYAN}Run All Cases (Old Version)"
-        echo -e "${GREEN}d) Expansion (450 Cases)"
-        echo -e "1) Echo + Expansion (118 Cases)"
+        echo -e "${GREEN}a) ${BLUE}Expansion (410 Cases)${GREEN}"
+        echo -e "1) Echo (118 Cases)"
         echo -e "2) CD (56 Cases)"
         echo -e "3) Execution (52 Cases)"
         echo -e "4) Redirections (111 Cases)"
@@ -28,10 +25,7 @@ tokenization_tester_menu() {
         read -n 1 -rp "Select an option: " choice
 
         case $choice in
-            a) execute_test "all"           "false"             ;;
-            b) execute_test "all"           "true"              ;;
-            c) run_all_tokenization_cases                       ;;
-            d) execute_test "expansion.xlsx"                    ;;
+            a) execute_test "expansion.xlsx"                    ;;
             1) execute_test "../program/echo_expansion.xlsx"    ;;
             2) execute_test "../program/cd.xlsx"                ;;
             3) execute_test "../program/execution.xlsx"         ;;
@@ -40,11 +34,11 @@ tokenization_tester_menu() {
             6) execute_test "../program/unset.xlsx"             ;;
             7) execute_test "../program/basic_cases.xlsx"       ;;
             8) execute_test "../program/complex_cases.xlsx"     ;;
-            9) execute_test "../program/export.xlsx"            ;;
-            g) execute_test "word_splitting.xlsx"               ;;
-            h) execute_test "operators_punctuation.xlsx"        ;;
-            i) execute_test "parentheses_priority.xlsx"         ;;
-            j) execute_test "combined_tokenization.xlsx"        ;;
+            # 9) execute_test "../program/export.xlsx"            ;;
+            # g) execute_test "word_splitting.xlsx"               ;;
+            # h) execute_test "operators_punctuation.xlsx"        ;;
+            # i) execute_test "parentheses_priority.xlsx"         ;;
+            # j) execute_test "combined_tokenization.xlsx"        ;;
             f) break ;;
             *) echo "Invalid option."; sleep 1 ;;
         esac

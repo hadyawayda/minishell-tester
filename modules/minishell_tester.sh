@@ -8,7 +8,8 @@ minishell_tester_menu() {
         echo -e "${BLUE}----- Minishell Tester -----${GREEN}"
         echo -e "a) ${CYAN}Run All Cases (Interactive, 616+ Cases)${GREEN}"
         echo -e "b) ${CYAN}Run All Cases (No Pause, 616+ Cases)${GREEN}"
-        echo -e "1) Echo + Expansion (118 Cases)"
+		echo -e "c) Expansion (410 Cases)"
+        echo -e "1) Echo (118 Cases)"
         echo -e "2) CD (56 Cases)"
         echo -e "3) Execution (52 Cases)"
         echo -e "4) Redirections (111 Cases)"
@@ -20,10 +21,11 @@ minishell_tester_menu() {
         echo -e "${ORANGE}f) Return to Main Menu${GREEN}"
         echo -e
     	read -n 1 -rp "Select an option: " choice
-        
+
         case $choice in
             a) execute_test "all" "false" ;;
             b) execute_test "all" "true"  ;;
+            1) execute_test "../tokenization/expansion.xlsx"          ;;
             1) execute_test "echo.xlsx"          ;;
             2) execute_test "cd.xlsx"            ;;
             3) execute_test "execution.xlsx"     ;;
