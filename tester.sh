@@ -43,6 +43,7 @@ source ./modules/case_tester.sh
 source ./modules/csv_parser.sh
 source ./modules/execution_helpers.sh
 source ./modules/minishell_tester.sh
+source ./modules/parsing_tester.sh
 source ./modules/settings_menu.sh
 source ./modules/summary_parser.sh
 source ./modules/test_execution.sh
@@ -120,7 +121,7 @@ while true; do
     echo -e "${BLUE}----- Minishell Tester -----"
     echo -e "${GREEN}1) Minishell Tester"
     echo -e "2) Tokenization Tester"
-    echo -e "3) Parsing & Tree Tester (Upcoming Feature)"
+    echo -e "3) Parsing & Tree Tester"
     echo -e "4) Settings"
     echo -e "${ORANGE}f) Exit${GREEN}"
     echo -e "${GREEN}"
