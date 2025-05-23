@@ -12,9 +12,9 @@ parsing_tester_menu() {
         read -n 1 -rp "Select an option: " choice
 
         case $choice in
-            d) execute_test "../parsing/parsing.xlsx"                    ;;
-            f) break ;;
-            *) echo "Invalid option."; sleep 1 ;;
+            d) execute_test "../parsing/parsing.xlsx"   ;;
+            f) break    ;;
+            *) echo "Invalid option.";;
         esac
     done
 }

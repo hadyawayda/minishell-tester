@@ -1,5 +1,0 @@
-./minishell
-ls
-
-$> cat << hola > bonjour
-$> cat bonjour
