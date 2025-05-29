@@ -47,7 +47,6 @@ source ./modules/parsing_tester.sh
 source ./modules/settings_menu.sh
 source ./modules/summary_parser.sh
 source ./modules/test_execution.sh
-source ./modules/tokenization_tester_script.sh
 source ./modules/tokenization_tester.sh
 
 # Load Configuration
@@ -85,7 +84,7 @@ NC='\033[0m'
 RED='\033[1;31m'
 GREEN="\033[1;32m"
 
-clear
+# clear
 echo -e "${CYAN}Welcome to the Minishell Tester!"
 echo -e "${GREEN}This script will help you test your Minishell implementation."
 echo -e "Please ensure you have the necessary test files in the correct format (refer to the README file for details)."
@@ -117,7 +116,7 @@ fi
 
 # Main Menu
 while true; do
-    clear
+    # clear
     echo -e "${BLUE}----- Minishell Tester -----"
     echo -e "${GREEN}1) Minishell Tester"
     echo -e "2) Tokenization Tester"
@@ -131,7 +130,7 @@ while true; do
         2) tokenization_tester_menu ;;
         3) parsing_tester_menu ;;
         4) settings_menu;;
-        f) clear ; exit 0;;
+        # f) clear ; exit 0;;
         *) echo -e "${RED}Invalid option.${NC}";;
     esac
 done

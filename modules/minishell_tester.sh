@@ -9,6 +9,7 @@ minishell_tester_menu() {
         echo -e "a) ${CYAN}Run All Cases (Interactive, 616+ Cases)${GREEN}"
         echo -e "b) ${CYAN}Run All Cases (No Pause, 616+ Cases)${GREEN}"
 		echo -e "c) Expansion (410 Cases)"
+		echo -e "d) Wildcards (70 Cases)"
         echo -e "1) Echo (118 Cases)"
         echo -e "2) CD (56 Cases)"
         echo -e "3) Execution (52 Cases)"
@@ -25,7 +26,8 @@ minishell_tester_menu() {
         case $choice in
             a) execute_test "all" "false" ;;
             b) execute_test "all" "true"  ;;
-            1) execute_test "../tokenization/expansion.xlsx"          ;;
+            c) execute_test "../tokenization/expansion.xlsx"          ;;
+            d) execute_test "../tokenization/wildcards.xlsx"          ;;
             1) execute_test "echo.xlsx"          ;;
             2) execute_test "cd.xlsx"            ;;
             3) execute_test "execution.xlsx"     ;;

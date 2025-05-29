@@ -34,7 +34,7 @@ tokenization_tester_menu() {
             6) execute_test "../program/unset.xlsx"             ;;
             7) execute_test "../program/basic_cases.xlsx"       ;;
             8) execute_test "../program/complex_cases.xlsx"     ;;
-            # 9) execute_test "../program/export.xlsx"            ;;
+            9) execute_test "../program/export.xlsx"            ;;
             # g) execute_test "word_splitting.xlsx"               ;;
             # h) execute_test "operators_punctuation.xlsx"        ;;
             # i) execute_test "parentheses_priority.xlsx"         ;;
