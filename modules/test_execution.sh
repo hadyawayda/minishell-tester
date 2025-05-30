@@ -153,10 +153,11 @@ execute_test_cases() {
         read -r expected_output <&4
         expected_output=${expected_output%ǂ}
       else
-          ## For Wildcard Expansion use this
-          expected_output=$(echo $( echo -e "$cleaned_block" ))
-
-          # expected_output="$(echo -e "$cleaned_block" | bash 2>&1)"
+          if [[ "${TEST_TYPE:-}" == "wildcard" ]]; then
+            expected_output=$(echo $( echo -e "$cleaned_block" ))
+          else
+          expected_output="$(echo -e "$cleaned_block" | bash 2>&1)"
+          fi
       fi
 
       # run the entire block as one case

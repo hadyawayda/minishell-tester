@@ -27,7 +27,8 @@ minishell_tester_menu() {
             a) execute_test "all" "false" ;;
             b) execute_test "all" "true"  ;;
             c) execute_test "../tokenization/expansion.xlsx"          ;;
-            d) execute_test "../tokenization/wildcards.xlsx"          ;;
+            d) TEST_TYPE="wildcard" ;
+               execute_test "../tokenization/wildcards.xlsx"          ;;
             1) execute_test "echo.xlsx"          ;;
             2) execute_test "cd.xlsx"            ;;
             3) execute_test "execution.xlsx"     ;;

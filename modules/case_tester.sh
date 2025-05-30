@@ -87,7 +87,7 @@ execute_test() {
 	> "$FAILED_SUMMARY_FILE"
 
     # Determine test directory based on test type
-    if [[ "$TEST_TYPE" == "program" ]]; then
+    if [[ "$TEST_TYPE" == "program" || "$TEST_TYPE" == "wildcard" ]]; then
         test_dir="$PROGRAM_TEST_DIR"
     elif [[ "$TEST_TYPE" == "tokenization" ]]; then
         test_dir="$TOKENIZATION_TEST_DIR"
