@@ -135,12 +135,6 @@ execute_test_cases() {
       read -r difficulty <&5
       difficulty="${difficulty%$delimiter}"
 
-      # 1) Skip if no difficulty column
-      if [[ -z "$difficulty" ]]; then
-        (( test_index++ ))
-        continue
-      fi
-
       # 2) If CASE_DIFFICULTY > 0 and this case is harder, skip
       if (( CASE_DIFFICULTY != 0 && difficulty > CASE_DIFFICULTY )); then
         (( test_index++ ))
@@ -159,7 +153,10 @@ execute_test_cases() {
         read -r expected_output <&4
         expected_output=${expected_output%ǂ}
       else
-          expected_output="$(echo -e "$cleaned_block" | bash 2>&1)"
+          ## For Wildcard Expansion use this
+          expected_output=$(echo $( echo -e "$cleaned_block" ))
+
+          # expected_output="$(echo -e "$cleaned_block" | bash 2>&1)"
       fi
 
       # run the entire block as one case
