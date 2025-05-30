@@ -103,6 +103,11 @@ execute_test() {
     chmod +x $BASH_EXECUTION_DIR/$EXECUTABLE_NAME
     cd "$EXECUTION_DIR" || { echo "Cannot enter execution directory"; return 1; }
 
+
+	if [[ "$TEST_TYPE" == "wildcard" ]]; then
+		cd "$ROOT_DIR"
+	fi
+
     if [[ "$test_arg" == "all" ]]; then
         run_all_cases "$test_dir" "$no_pause"
         if [[ "$no_pause" == "true" ]]; then

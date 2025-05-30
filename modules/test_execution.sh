@@ -6,6 +6,10 @@ run_one_case() {
   # 1) Compute expected output using bash
   cd "$EXECUTION_DIR"
 
+  if [[ "$TEST_TYPE" == "wildcard" ]]; then
+    cd "$ROOT_DIR"
+  fi
+
   # 2) Run your minishell on the same block
   if [[ "${TEST_TYPE:-}" == "program" && ( "$cmd_block" == *"| cat -e"* || "$cmd_block" == *"|"* ) ]]; then
     actual_output="$(echo -e "$cmd_block" | script -q -c "$ROOT_DIR/$EXECUTABLE_NAME" /dev/null 2>&1 | strip_ansi_and_cr)"
