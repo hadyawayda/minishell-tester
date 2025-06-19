@@ -107,6 +107,7 @@ compare_outputs() {
 
   [[ "$expected" == *"syntax error"* && "$actual" == *"syntax error"* ]] ||
   [[ "$expected" == *"command not found"* && "$actual" == *"command not found"* ]] ||
+  [[ "$expected" == *"Command not found"* && "$actual" == *"Command not found"* ]] ||
   [[ "$expected" == *"No such file or directory"* && "$actual" == *"No such file or directory"* ]] ||
   [[ "$expected" == *"Not a directory"* && "$actual" == *"Not a directory"* ]] ||
   [[ "$expected" == *"Is a directory"* && "$actual" == *"Is a directory"* ]] ||
